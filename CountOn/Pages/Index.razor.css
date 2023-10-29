@@ -1,0 +1,45 @@
+.flex {
+    display: flex
+}
+
+.add-bill-button {
+}
+
+.billing-container {
+    width: auto
+}
+
+.red {
+    background-color: red;
+    color: red;
+}
+
+.blue {
+    background-color: blue;
+    color: blue;
+}
+
+.white {
+    background-color: white;
+}
+
+.top-left-button {
+    height: 50px;
+    width: 50px;
+    background-color: white;
+    border-radius: 50%;
+    display: inline-block;
+    text-align: center;
+    font-size: 2.25rem; /* 36px */
+    line-height: 2.5rem; /* 40px */
+}
+
+.top-left-button-container {
+    float: left;
+}
+
+.billing-container {
+    float: none;
+    overflow: hidden;
+    flex: 1 1 0%;
+}

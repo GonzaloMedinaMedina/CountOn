@@ -1,0 +1,28 @@
+﻿@page "/"
+
+@using DBManager;
+
+<div class="flex root">
+
+	<div class="top-left-button-container p-2">
+		<div class="top-left-button p-1" @onclick="AddNewBill">+</div>
+	</div>
+
+	<div class="billing-container blue p-4">
+		<div class="p-2">
+			<div class="white">hola</div>
+		</div>
+		<div class="p-2">
+			<div class="white">>@Class1.DatabasePath</div>
+		</div>
+	</div>
+</div>
+
+@code {
+
+	private void AddNewBill()
+	{
+		@inject NavigationManager navManager;
+		navManager.NavigateTo("bill");
+	}
+}
