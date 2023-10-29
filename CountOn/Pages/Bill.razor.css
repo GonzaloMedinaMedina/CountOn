@@ -1,0 +1,54 @@
+.bill-container {
+    background-color: blue;
+    padding: 10px;
+}
+
+.white {
+    background-color: white !important;
+}
+
+.properties-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.buttons-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: max-content;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+.button {
+    width: fit-content;
+    cursor: pointer;
+    -webkit-user-select: none; /* Safari */
+    -ms-user-select: none; /* IE 10 and IE 11 */
+    user-select: none; /* Standard syntax */
+}
+
+.red {
+    background-color: red;
+}
+
+.green {
+    background-color: green;
+}
+
+div {
+    border-radius: 0.5rem; /* 8px */
+}
+
+p {
+    vertical-align: middle;
+    display: table-cell;
+}
+
+.property-label {
+    text-align:center;
+    width: 7.5%;
+    min-width: 6%;
+}

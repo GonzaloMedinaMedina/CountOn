@@ -1,14 +1,15 @@
 ﻿@page "/"
 
 @using DBManager;
+@using System.Text.Json;
 
-<div class="flex root">
+<div class="flex">
 
-	<div class="top-left-button-container p-2">
-		<div class="top-left-button p-1" @onclick="AddNewBill">+</div>
+	<div class="top-left-button-container">
+		<div class="top-left-button p-1" @onclick="(e => NavigateToBillPage())">+</div>
 	</div>
 
-	<div class="billing-container blue p-4">
+	<div class="billing-container blue">
 		<div class="p-2">
 			<div class="white">hola</div>
 		</div>
@@ -20,9 +21,12 @@
 
 @code {
 
-	private void AddNewBill()
+	private void NavigateToBillPage(string JsonBill = "")
 	{
+		
+		DBManager.Entities.Bill b = new DBManager.Entities.Bill("02", "platanos", 3, DBManager.Entities.BillType.FOOD, DateTime.Now);
+		string jsonString = JsonSerializer.Serialize(b);
 		@inject NavigationManager navManager;
-		navManager.NavigateTo("bill");
+		navManager.NavigateTo("bill/" + JsonBill);
 	}
 }

@@ -1,0 +1,110 @@
+﻿@page "/bill/"
+@page "/bill/{bill}"
+
+@using CountOn.Data
+@using System.Text.Json;
+
+
+
+<div class="bill-container">
+	<div class="properties-container">
+
+		@{
+			void RenderProperty(string propertyName)
+			{
+				Boolean billIsNull = billObject == null;
+				if (propertyName == "date" && billIsNull)
+				{
+					return;
+				}
+
+				<div class="white d-inline-flex p-1 m-2">
+					<div class="property-label">@propertyName.First().ToString().ToUpper()@propertyName.Substring(1)</div>
+
+					@if (billIsNull)
+					{
+						<input type="text" name=@propertyName+"Input" />
+					}
+					else
+					{
+						<div>@properties[propertyName]</div>
+					}
+				</div>
+			}
+			RenderProperty("title");
+			RenderProperty("price");
+			RenderProperty("type");
+			RenderProperty("date");
+		}
+	</div>
+	@if (billObject == null)
+	{
+		<div class="buttons-container p-2 w-100">
+			<div class="buttons-container w-50">
+				<div class="red button p-1">Cancel</div>
+			</div>
+			<div class="buttons-container w-50">
+				<div class="green button p-1">Save</div>
+			</div>
+		</div>
+	}
+	else
+	{
+		<div class="buttons-container p-2 w-100">
+			<div class="green button p-1">Edit</div>
+		</div>
+	}
+</div>
+
+@functions {
+
+	[Parameter]
+	public String bill { get; set; }
+	private DBManager.Entities.Bill billObject { get; set; }
+	private Dictionary<string, Object> properties = new Dictionary<string, object>();
+	private string _name { get; set; }
+	private int _price { get; set; }
+	private string _billType { get; set; }
+	private string _date { get; set; }
+}
+
+@code {
+	private WeatherForecast[] forecasts;
+
+	protected override async Task OnInitializedAsync()
+	{
+		billObject = String.IsNullOrWhiteSpace(bill) ? null : JsonSerializer.Deserialize<DBManager.Entities.Bill>(bill);
+
+		if (billObject != null)
+		{
+			properties.Add("title", billObject.Name);
+			properties.Add("price", billObject.Price);
+			properties.Add("type", billObject.BillType.ToString());
+			properties.Add("date", billObject.Date.ToString());
+		}
+	}
+}
+
+
+@code{/*	<table class="table">
+		<thead>
+			<tr>
+				<th>Date</th>
+				<th>Temp. (C)</th>
+				<th>Temp. (F)</th>
+				<th>Summary</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var forecast in forecasts)
+			{
+				<tr>
+					<td>@forecast.Date.ToShortDateString()</td>
+					<td>@forecast.TemperatureC</td>
+					<td>@forecast.TemperatureF</td>
+					<td>@forecast.Summary</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+	*/}
