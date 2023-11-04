@@ -1,52 +1,31 @@
 ﻿using DBManager.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+using DBManager.QueryResults;
+using DBManager.Service;
 
 namespace DBManager.Repository
 {
 	public class Repository<T> : IRepository<T> where T : Entity
 	{
-		private readonly Context.DbContext _context;
+		private IDbService<T> _dbService;
+
 		public Repository()
 		{
-			_context = new Context.DbContext();
+			_dbService = new DbService<T>();
 		}
 
-		public EntityEntry<T> AddEntity(T entity)
+		public CreateQueryResult AddEntity(T entity)
 		{
-			try
-			{
-				EntityEntry<T> result = null;
-				_context.Database.EnsureCreated();
-				_context.Database.OpenConnection();
-
-				if (entity.GetId() != 0)
-				{
-					_context.Bills.Add(entity as Bill);
-				}
-				else
-					result = _context.Add(entity);
-
-				_context.SaveChanges();
-
-				return result;
-			}catch(Exception ex) 
-			{
-				return null;
-			}finally 
-			{
-				_context.Database.CloseConnection();
-				_context.Dispose();
-			}
+			return _dbService.AddEntity(entity);
 		}
 
-		public IEnumerable<T> GetAllEntities(T entity)
+		public ReadQueryResult GetAllEntities()
 		{
-			return _context.Set<T>().AsEnumerable<T>();
+			return _dbService.GetAllEntities();
 		}
-		public T GetEntityById(T entity)
+
+		public T GetEntityById(int id)
 		{
-			return _context.Set<T>().Where(e =>  e.GetId() == entity.GetId()).FirstOrDefault();
+			return null;//_dbService.GetEntityById(id);
 		}
 	}
 }

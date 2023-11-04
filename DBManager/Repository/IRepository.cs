@@ -1,12 +1,12 @@
 ﻿using DBManager.Entities;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+using DBManager.QueryResults;
 
 namespace DBManager.Repository
 {
 	internal interface IRepository<T> where T : Entity
 	{
-		EntityEntry<T> AddEntity(T entity);
-		IEnumerable<T> GetAllEntities(T entity);
-		T GetEntityById(T entity);
+		CreateQueryResult AddEntity(T entity);
+		ReadQueryResult GetAllEntities();
+		T GetEntityById(int id);
 	}
 }
