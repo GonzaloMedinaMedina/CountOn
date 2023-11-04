@@ -13,6 +13,11 @@ namespace DBManager.Context
 
 		public DbContext(DbContextOptions dbContextOptions) : base(dbContextOptions) { }
 
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.Entity<Bill>().HasKey(x => x.Id);
+		}
+
 		protected override void OnConfiguring(DbContextOptionsBuilder options)
 		{ 
 			options.UseSqlite($"Data Source={DBConstants.DatabasePath}");

@@ -15,28 +15,20 @@ namespace DBManager.Entities
 
 	public class Bill : Entity
 	{
-		[Key]
-		public int BillId { get; set; }
 		public string Name { get; set; }
 		public int Price { get; set; }
 		public BillType BillType { get; set; }
 		public DateTime Date { get; set; }
 
-		public Bill()
+		public Bill() : base(-1)
 		{ }
 
-		public Bill(int id, string name, int price, BillType billType, DateTime date)
+		public Bill(int id, string name, int price, BillType billType, DateTime date) : base(id)
 		{
-			BillId = id;
 			Name = name;
 			Price = price;
 			BillType = billType;
 			Date = date;
-		}
-
-		public override int GetId()
-		{
-			return BillId;
 		}
 	}
 }
