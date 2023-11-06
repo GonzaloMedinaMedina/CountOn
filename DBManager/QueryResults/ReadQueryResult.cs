@@ -6,6 +6,11 @@ namespace DBManager.QueryResults
 	{
 		private readonly IEnumerable<Entity> readEntities;
 
+		public ReadQueryResult() : base()
+		{
+			readEntities = new List<Entity>();
+		}
+
 		public ReadQueryResult(IEnumerable<Entity> re, bool result) : base(result)
 		{
 			this.readEntities = re;
