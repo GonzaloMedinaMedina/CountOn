@@ -1,4 +1,5 @@
 ﻿using DBManager.Entities;
+using DBManager.Provider;
 using DBManager.QueryResults;
 using DBManager.Service;
 
@@ -11,6 +12,10 @@ namespace DBManager.Repository
 		public Repository()
 		{
 			_dbService = new DbService<T>();
+		}
+		public Repository(IDbProvider provider)
+		{
+			_dbService = new DbService<T>(provider);
 		}
 
 		public CreateQueryResult AddEntity(T entity)

@@ -3,7 +3,7 @@ using DBManager.QueryResults;
 
 namespace DBManager.Repository
 {
-	internal interface IRepository<T> where T : Entity
+	public interface IRepository<T> where T : Entity
 	{
 		CreateQueryResult AddEntity(T entity);
 		ReadQueryResult GetAllEntities();
