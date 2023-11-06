@@ -1,8 +1,9 @@
-﻿using SQLite;
+﻿using DBManager.QueryResults;
 
 namespace DBManager.Context
 {
-	internal interface IDbContext
+	public interface IDbContext
 	{
+		QueryResult ExecuteQuery(Func<DbContext, QueryResult> queryFunc);
 	}
 }
