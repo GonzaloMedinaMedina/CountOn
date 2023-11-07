@@ -1,12 +1,7 @@
-.yellow {
-    background-color: yellow;
-}
-
 .green {
     display: flex;
     flex-direction: column;
     background-color: green;
-    height: 100vh;
 }
 
 
