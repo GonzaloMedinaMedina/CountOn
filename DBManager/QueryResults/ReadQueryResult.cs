@@ -11,9 +11,14 @@ namespace DBManager.QueryResults
 			readEntities = new List<Entity>();
 		}
 
+		public ReadQueryResult(Entity entity, bool result) : base(result)
+		{
+			readEntities = entity != null ? new List<Entity> () { entity } : new List<Entity>();
+		}
+
 		public ReadQueryResult(IEnumerable<Entity> re, bool result) : base(result)
 		{
-			this.readEntities = re;
+			readEntities = re;
 		}
 
 		public IEnumerable<Entity> GetEntities() { return readEntities; }
