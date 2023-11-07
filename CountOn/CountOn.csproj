@@ -53,4 +53,8 @@
       <ProjectReference Include="..\DBManager\DBManager.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="PSC.Blazor.Components.Chartjs" Version="6.0.41" />
+    </ItemGroup>
+
 </Project>
