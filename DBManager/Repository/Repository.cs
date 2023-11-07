@@ -28,9 +28,9 @@ namespace DBManager.Repository
 			return _dbService.GetAllEntities();
 		}
 
-		public T GetEntityById(int id)
+		public ReadQueryResult GetEntityById(int id)
 		{
-			return null;//_dbService.GetEntityById(id);
+			return _dbService.GetEntityById(id);
 		}
 	}
 }

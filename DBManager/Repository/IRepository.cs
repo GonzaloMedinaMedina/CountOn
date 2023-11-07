@@ -7,6 +7,7 @@ namespace DBManager.Repository
 	{
 		CreateQueryResult AddEntity(T entity);
 		ReadQueryResult GetAllEntities();
-		T GetEntityById(int id);
+        ReadQueryResult GetEntityById(int id);
+		
 	}
 }
