@@ -4,6 +4,6 @@ namespace DBManager.Context
 {
 	public interface IDbContext
 	{
-		QueryResult ExecuteQuery(Func<DbContext, QueryResult> queryFunc);
+		T ExecuteQuery<T>(Func<DbContext, T> queryFunc) where T : QueryResult;
 	}
 }

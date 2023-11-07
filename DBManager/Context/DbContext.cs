@@ -32,11 +32,12 @@ namespace DBManager.Context
 			}
 		}
 
-		public QueryResult ExecuteQuery(Func<DbContext, QueryResult> queryFunc)
+		public T ExecuteQuery<T>(Func<DbContext, T> queryFunc) where T : QueryResult
 		{
+			T queryResult = (T) Activator.CreateInstance(typeof(T));
 			try
 			{
-				QueryResult queryResult = queryFunc.Invoke(this);
+				queryResult = queryFunc.Invoke(this);
 				SaveChanges();
 				return queryResult;
 			}
@@ -46,7 +47,7 @@ namespace DBManager.Context
 
 			}
 
-			return new QueryResult();
+			return queryResult;
 		}
 	}
 }
