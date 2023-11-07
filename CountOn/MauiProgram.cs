@@ -1,7 +1,4 @@
-﻿using Microsoft.AspNetCore.Components.WebView.Maui;
-using CountOn.Data;
-
-namespace CountOn;
+﻿namespace CountOn;
 
 public static class MauiProgram
 {
@@ -9,7 +6,7 @@ public static class MauiProgram
 	{
 		var builder = MauiApp.CreateBuilder();
 		builder
-			.UseMauiApp<App>()
+            .UseMauiApp<App>()
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -17,11 +14,8 @@ public static class MauiProgram
 
 		builder.Services.AddMauiBlazorWebView();
 		#if DEBUG
-		builder.Services.AddBlazorWebViewDeveloperTools();
+			builder.Services.AddBlazorWebViewDeveloperTools();
 #endif
-		
-		builder.Services.AddSingleton<WeatherForecastService>();
-
-		return builder.Build();
+        return builder.Build();
 	}
 }
