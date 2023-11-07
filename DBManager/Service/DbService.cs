@@ -42,7 +42,8 @@ namespace DBManager.Service
 				return new CreateQueryResult(entity, true);
 			};
 
-			return (CreateQueryResult)ExecuteQuery(AddEntityFunc);
+			var context = _dbProvider.GetDbContext();
+			return context.ExecuteQuery(AddEntityFunc);
 		}
 	
 		public ReadQueryResult GetAllEntities()
@@ -50,35 +51,24 @@ namespace DBManager.Service
 			Func<Context.DbContext, ReadQueryResult> GetAllEntitiesFunc = context =>
 			{
 				List<T> entities = new List<T>(context.Set<T>().AsEnumerable());
-				return new ReadQueryResult(entities, true);
+				return new ReadQueryResult(entities, entities?.Count != 0);
 			};
 
-			return (ReadQueryResult)ExecuteQuery(GetAllEntitiesFunc);
+			var context = _dbProvider.GetDbContext();
+			return context.ExecuteQuery(GetAllEntitiesFunc);
 		}
 
-		public T GetEntityById(int id)
+		public ReadQueryResult GetEntityById(int id)
 		{
-			T result = null;
-			/*using (var context = _dbProvider.GetDbContext())
-			{
-				try
-				{
-					result = context.Set<T>().Where(e => e.Id == id).FirstOrDefault();
-					context.SaveChanges();
-				}
-				catch (Exception ex)
-				{
-					Console.WriteLine(ex.Message);
-				}
-				finally
-				{
-					context.Database.CloseConnection();
-					context.Dispose();
-				}
-			}
-			*/
-			return result;
-		}
+			Func<Context.DbContext, ReadQueryResult> GetEntityById = context =>
+			{ 
+				T entity = context.Set<T>().FirstOrDefault(x => x.Id == id);
+				return new ReadQueryResult(entity, entity != null);
+			};
+
+            var context = _dbProvider.GetDbContext();
+            return context.ExecuteQuery(GetEntityById);
+        }
 
 		public QueryResult ExecuteQuery(Func<Context.DbContext, QueryResult> queryFunc)
 		{

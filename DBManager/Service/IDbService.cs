@@ -7,6 +7,6 @@ namespace DBManager.Service
 	{
 		CreateQueryResult AddEntity(T entity);
 		ReadQueryResult GetAllEntities();
-		//T GetEntityById(int id);
+        ReadQueryResult GetEntityById(int id);
 	}
 }
