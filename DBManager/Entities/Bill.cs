@@ -1,5 +1,4 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.Text.Json;
 
 namespace DBManager.Entities
 {
@@ -7,7 +6,7 @@ namespace DBManager.Entities
 	{
 		HOBBY,
 		FOOD,
-		CLOTHE,
+		CLOTHES,
 		RENT,
 		BILLS,
 		OTHERS
@@ -23,12 +22,25 @@ namespace DBManager.Entities
 		public Bill() : base(-1)
 		{ }
 
-		public Bill(int id, string name, int price, BillType billType, DateTime date) : base(id)
+		public Bill(string name, int price, BillType billType, DateTime date) : base(-1)
 		{
 			Name = name;
 			Price = price;
 			BillType = billType;
 			Date = date;
+		}
+
+		public static Bill Deserialize(string billString)
+		{
+			var bill = String.IsNullOrWhiteSpace(billString) ? null : JsonSerializer.Deserialize<DBManager.Entities.Bill>(billString);
+			JsonDocument jsonDocument = JsonDocument.Parse(billString);
+			JsonElement root = jsonDocument.RootElement;
+			if(root.TryGetProperty("Id", out var idValue))
+			{
+				bill.SetId(idValue.GetInt32());
+			}
+
+			return bill;
 		}
 	}
 }
