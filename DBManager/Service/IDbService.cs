@@ -5,8 +5,8 @@ namespace DBManager.Service
 {
     public interface IDbService<T> where T : Entity
 	{
-		CreateQueryResult AddEntity(T entity);
-		ReadQueryResult GetAllEntities();
-        ReadQueryResult GetEntityById(int id);
+		CreateQueryResult<T> AddEntity(T entity);
+		ReadQueryResult<T> GetAllEntities();
+        ReadQueryResult<T> GetEntityById(int id);
 	}
 }

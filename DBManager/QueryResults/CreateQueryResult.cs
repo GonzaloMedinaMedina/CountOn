@@ -2,19 +2,19 @@
 
 namespace DBManager.QueryResults
 {
-	public class CreateQueryResult : QueryResult
+	public class CreateQueryResult<T> : QueryResult where T : Entity
 	{
-		private readonly Entity createdEntity = null;
+		private readonly T createdEntity = null;
 
 		public CreateQueryResult() : base()
 		{}
 
-		public CreateQueryResult(Entity createdEntity, bool result) : base(result)
+		public CreateQueryResult(T createdEntity, bool result) : base(result)
 		{
 			this.createdEntity = createdEntity;
 		}
 
-		public Entity GetEntity() { return  createdEntity; }
+		public T GetEntity() { return  createdEntity; }
 
 	}
 }

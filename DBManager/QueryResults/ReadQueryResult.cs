@@ -2,25 +2,25 @@
 
 namespace DBManager.QueryResults
 {
-	public class ReadQueryResult : QueryResult
+	public class ReadQueryResult<T> : QueryResult where T : Entity
 	{
-		private readonly IEnumerable<Entity> readEntities;
+		private readonly IEnumerable<T> readEntities;
 
 		public ReadQueryResult() : base()
 		{
-			readEntities = new List<Entity>();
+			readEntities = new List<T>();
 		}
 
-		public ReadQueryResult(Entity entity, bool result) : base(result)
+		public ReadQueryResult(T entity, bool result) : base(result)
 		{
-			readEntities = entity != null ? new List<Entity> () { entity } : new List<Entity>();
+			readEntities = entity != null ? new List<T> () { entity } : new List<T>();
 		}
 
-		public ReadQueryResult(IEnumerable<Entity> re, bool result) : base(result)
+		public ReadQueryResult(IEnumerable<T> re, bool result) : base(result)
 		{
 			readEntities = re;
 		}
 
-		public IEnumerable<Entity> GetEntities() { return readEntities; }
+		public IEnumerable<T> GetEntities() { return readEntities; }
 	}
 }

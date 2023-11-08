@@ -18,17 +18,17 @@ namespace DBManager.Repository
 			_dbService = new DbService<T>(provider);
 		}
 
-		public CreateQueryResult AddEntity(T entity)
+		public CreateQueryResult<T> AddEntity(T entity)
 		{
 			return _dbService.AddEntity(entity);
 		}
 
-		public ReadQueryResult GetAllEntities()
+		public ReadQueryResult<T> GetAllEntities()
 		{
 			return _dbService.GetAllEntities();
 		}
 
-		public ReadQueryResult GetEntityById(int id)
+		public ReadQueryResult<T> GetEntityById(int id)
 		{
 			return _dbService.GetEntityById(id);
 		}

@@ -17,9 +17,9 @@ namespace DBManager.Service
 			_dbProvider = provider;
 		}
 
-		public CreateQueryResult AddEntity(T entity)
+		public CreateQueryResult<T> AddEntity(T entity)
 		{
-			Func<Context.DbContext, CreateQueryResult> AddEntityFunc = context =>
+			Func<Context.DbContext, CreateQueryResult<T>> AddEntityFunc = context =>
 			{
 				if (entity.Id != 0)
 				{
@@ -39,31 +39,31 @@ namespace DBManager.Service
 					context.Update(entity);
 				}
 
-				return new CreateQueryResult(entity, true);
+				return new CreateQueryResult<T>(entity, true);
 			};
 
 			var context = _dbProvider.GetDbContext();
 			return context.ExecuteQuery(AddEntityFunc);
 		}
 	
-		public ReadQueryResult GetAllEntities()
+		public ReadQueryResult<T> GetAllEntities()
 		{
-			Func<Context.DbContext, ReadQueryResult> GetAllEntitiesFunc = context =>
+			Func<Context.DbContext, ReadQueryResult<T>> GetAllEntitiesFunc = context =>
 			{
 				List<T> entities = new List<T>(context.Set<T>().AsEnumerable());
-				return new ReadQueryResult(entities, entities?.Count != 0);
+				return new ReadQueryResult<T>(entities, entities?.Count != 0);
 			};
 
 			var context = _dbProvider.GetDbContext();
 			return context.ExecuteQuery(GetAllEntitiesFunc);
 		}
 
-		public ReadQueryResult GetEntityById(int id)
+		public ReadQueryResult<T> GetEntityById(int id)
 		{
-			Func<Context.DbContext, ReadQueryResult> GetEntityById = context =>
+			Func<Context.DbContext, ReadQueryResult<T>> GetEntityById = context =>
 			{ 
 				T entity = context.Set<T>().FirstOrDefault(x => x.Id == id);
-				return new ReadQueryResult(entity, entity != null);
+				return new ReadQueryResult<T>(entity, entity != null);
 			};
 
             var context = _dbProvider.GetDbContext();
