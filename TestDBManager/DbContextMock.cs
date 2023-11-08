@@ -1,4 +1,5 @@
 ﻿using DBManager.Provider;
+using DBManager.Entities;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -25,10 +26,29 @@ namespace TestDBManager
 		public static Mock<IDbProvider> GetMockProvider()
 		{
 			var mockProvider = new Mock<IDbProvider>();
-			var context = DbContextMock.GetMockContext();
+			var context = GetMockContext();
 			mockProvider.Setup(x => x.GetDbContext()).Returns(context);
 
 			return mockProvider;
 		}
-	}
+
+		private static void AddDefaultBills(DBManager.Context.DbContext context)
+		{
+            Bill entity = new Bill("platanos", 3, BillType.FOOD, DateTime.Now);
+			entity.SetId(1);
+            context.Bills.Add(entity);
+
+            entity = new Bill("caracoles", 5, BillType.FOOD, DateTime.Now);
+            entity.SetId(2);
+            context.Bills.Add(entity);
+
+            entity = new Bill("camisas", 50, BillType.CLOTHES, DateTime.Now.AddDays(-1));
+            entity.SetId(3);
+            context.Bills.Add(entity);
+
+            entity = new Bill("karts", 35, BillType.HOBBY, DateTime.Now.AddDays(-1));
+            entity.SetId(4);
+            context.Bills.Add(entity);
+        }
+    }
 }
