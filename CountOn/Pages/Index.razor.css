@@ -10,8 +10,7 @@
 }
 
 .blue {
-    background-color: blue;
-    color: blue;
+    background-color:lightskyblue;
 }
 
 .white {
@@ -19,6 +18,8 @@
 }
 
 .top-left-button {
+    top: 10px;
+    position: sticky;
     height: 50px;
     width: 50px;
     background-color: white;
@@ -27,10 +28,24 @@
     text-align: center;
     font-size: 2.25rem; /* 36px */
     line-height: 2.5rem; /* 40px */
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .top-left-button-container {
     flex: 5%;
     padding: 10px;
+}
+
+.bill-elements-header {
+    display: flex;
+}
+
+.bill-element {
+    margin-top: 1%;
+    display: flex;
+}
+
+.bill-text {
+    flex:1;
+    text-align:center;
 }

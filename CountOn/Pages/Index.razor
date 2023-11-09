@@ -1,6 +1,5 @@
 ﻿@page "/"
-
-@using DBManager;
+@using DBManager.Repository;
 @using System.Text.Json;
 
 <div class="flex">
@@ -10,22 +9,51 @@
 	</div>
 
 	<div class="billing-container blue">
+		
 		<div class="p-2">
-			<div class="white">hola</div>
+			<ColumnChart />
 		</div>
-		<div class="p-2">
-			<div class="white">>@Class1.DatabasePath</div>
+
+		<div class="p-2 blue">
+			<div class="bill-elements-header white">
+				<div class="bill-text">Name</div>
+				<div class="bill-text">Price</div>
+				<div class="bill-text">Date</div>
+			</div>
+
+			@foreach (var billsInDate in billsByDate)
+			{
+				<div>
+					<div>@billsInDate.Key.ToString()</div>
+
+					@foreach (var bill in billsInDate.Value)
+					{
+						<div class="bill-element white" @onclick="(e => NavigateToBillPage(JsonSerializer.Serialize<DBManager.Entities.Bill>(bill)))">
+							<div class="bill-text">@bill.Name</div>
+							<div class="bill-text">@bill.Price</div>
+							<div class="bill-text">@bill.BillDate</div>
+						</div>
+					}
+				</div>
+			}
 		</div>
 	</div>
 </div>
 
-@code {
+
+@code
+{
+	private IDictionary<DateTime, IList<DBManager.Entities.Bill>> billsByDate = new Dictionary<DateTime, IList<DBManager.Entities.Bill>>();
+
+	protected override void OnInitialized()
+	{
+		BillRepository rep = new BillRepository();
+		var date = new DateTime(2023, 11, 8);
+		billsByDate = rep.GetBillsByDateRange(date.AddDays(-7), date);
+	}
 
 	private void NavigateToBillPage(string JsonBill = "")
 	{
-		
-		DBManager.Entities.Bill b = new DBManager.Entities.Bill("02", "platanos", 3, DBManager.Entities.BillType.FOOD, DateTime.Now);
-		string jsonString = JsonSerializer.Serialize(b);
 		@inject NavigationManager navManager;
 		navManager.NavigateTo("bill/" + JsonBill);
 	}

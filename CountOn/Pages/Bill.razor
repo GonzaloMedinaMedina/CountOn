@@ -1,7 +1,6 @@
 ﻿@page "/bill/"
-@page "/bill/{bill}"
+@page "/bill/{billString}"
 
-@using CountOn.Data
 @using System.Text.Json;
 
 <div class="bill-container">
@@ -21,7 +20,20 @@
 
 					@if (billIsNull)
 					{
-						<input type="text" name=@propertyName+"Input" />
+						if (propertyName == "type")
+						{
+							<select @bind=@properties[propertyName] name ="billType" id="billType">
+								@foreach (var billType in Enum.GetNames(typeof(DBManager.Entities.BillType)))
+								{
+									<option value=@billType>@billType</option>
+								}
+							</select>
+							
+						}
+						else
+						{
+							<input @bind=@properties[propertyName] type="text" name=@propertyName />
+						}
 					}
 					else
 					{
@@ -43,7 +55,7 @@
 				<div class="red button p-1">Cancel</div>
 			</div>
 			<div class="buttons-container w-50">
-				<div class="green button p-1">Save</div>
+				<div class="green button p-1" @onclick="(e => SaveBill())">Save</div>
 			</div>
 		</div>
 	}
@@ -58,32 +70,53 @@
 @functions {
 
 	[Parameter]
-	public String bill { get; set; }
+	public String billString { get; set; }
+
 	private DBManager.Entities.Bill billObject { get; set; }
-	private Dictionary<string, Object> properties = new Dictionary<string, object>();
-	private string _name { get; set; }
-	private int _price { get; set; }
-	private string _billType { get; set; }
-	private string _date { get; set; }
+	private Dictionary<string, string> properties = new Dictionary<string, string>();
 }
 
 @code {
-	private WeatherForecast[] forecasts;
-
 	protected override void OnInitialized()
 	{
-		billObject = String.IsNullOrWhiteSpace(bill) ? null : JsonSerializer.Deserialize<DBManager.Entities.Bill>(bill);
+		billObject = DBManager.Entities.Bill.Deserialize(billString);
 
 		if (billObject != null)
 		{
 			properties.Add("title", billObject.Name);
-			properties.Add("price", billObject.Price);
+			properties.Add("price", billObject.Price.ToString());
 			properties.Add("type", billObject.BillType.ToString());
-			properties.Add("date", billObject.Date.ToString());
+			properties.Add("date", billObject.BillDate.ToString());
+		}
+		else
+		{
+			properties.Add("title", "");
+			properties.Add("price", "0");
+			properties.Add("type", "");
+			properties.Add("date", "");
 		}
 	}
-}
 
+	protected void SaveBill()
+	{
+		int price =  Int32.Parse(properties["price"]);
+		Enum.TryParse(properties["type"], out DBManager.Entities.BillType type);
+
+		DBManager.Entities.Bill b = new DBManager.Entities.Bill((string)properties["title"], price, type, DateTime.Now);
+		DBManager.Repository.Repository<DBManager.Entities.Bill> rep = new DBManager.Repository.Repository<DBManager.Entities.Bill>();
+		
+		var queryResult = rep.AddEntity(b);
+
+		if (queryResult.GetResult())
+		{
+			@inject NavigationManager navManager;
+			navManager.NavigateTo("/");
+		}
+		/*
+		 * TODO: Ad error message
+		 */
+	}
+}
 
 @code{/*	<table class="table">
 		<thead>
