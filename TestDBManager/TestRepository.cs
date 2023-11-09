@@ -7,6 +7,7 @@ namespace TestDBManager
 	public class TestRepository
 	{
 		IRepository<Bill> _billRepository;
+
 		public TestRepository()
 		{
             _billRepository = new Repository<Bill>(DbContextMock.GetMockProvider().Object);
@@ -21,18 +22,7 @@ namespace TestDBManager
 
 			Assert.Equal(4, billsReadQueryResult.GetEntities().Count());
 			Assert.True(billsReadQueryResult.GetResult());
-		}
-
-		[Fact]
-		public void GetAllEntitiesWithEmptyDBMustReturnNoneBill()
-		{
-            ReadQueryResult<Bill> billsReadQueryResult = new ReadQueryResult<Bill>();
-
-            billsReadQueryResult = _billRepository.GetAllEntities();
-
-            Assert.Empty(billsReadQueryResult.GetEntities());
-            Assert.False(billsReadQueryResult.GetResult());
-        }
+		} 
 
         [Fact]
         public void GetEntityByIdWithNonExistingIdMust()

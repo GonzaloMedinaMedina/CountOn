@@ -27,6 +27,8 @@ namespace TestDBManager
 		{
 			var mockProvider = new Mock<IDbProvider>();
 			var context = GetMockContext();
+			AddDefaultBills(context);
+
 			mockProvider.Setup(x => x.GetDbContext()).Returns(context);
 
 			return mockProvider;
@@ -34,21 +36,25 @@ namespace TestDBManager
 
 		private static void AddDefaultBills(DBManager.Context.DbContext context)
 		{
-            Bill entity = new Bill("platanos", 3, BillType.FOOD, DateTime.Now);
+			context.Database.EnsureCreated();
+
+			Bill entity = new Bill("platanos", 3, BillType.FOOD, DateTime.Now.AddDays(-2));
 			entity.SetId(1);
             context.Bills.Add(entity);
 
-            entity = new Bill("caracoles", 5, BillType.FOOD, DateTime.Now);
+            entity = new Bill("caracoles", 5, BillType.FOOD, DateTime.Now.AddDays(-1));
             entity.SetId(2);
             context.Bills.Add(entity);
 
-            entity = new Bill("camisas", 50, BillType.CLOTHES, DateTime.Now.AddDays(-1));
+            entity = new Bill("camisas", 50, BillType.CLOTHES, DateTime.Now);
             entity.SetId(3);
             context.Bills.Add(entity);
 
-            entity = new Bill("karts", 35, BillType.HOBBY, DateTime.Now.AddDays(-1));
+            entity = new Bill("karts", 35, BillType.HOBBY, DateTime.Now.AddDays(1));
             entity.SetId(4);
             context.Bills.Add(entity);
+
+			context.SaveChanges();
         }
     }
 }
