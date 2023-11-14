@@ -2,6 +2,7 @@
 @page "/bill/{billString}"
 
 @using System.Text.Json;
+@using CountOn.Repository;
 
 <div class="bill-container">
 	<div class="properties-container">
@@ -103,7 +104,7 @@
 		Enum.TryParse(properties["type"], out DBManager.Entities.BillType type);
 
 		DBManager.Entities.Bill b = new DBManager.Entities.Bill((string)properties["title"], price, type, DateTime.Now);
-		DBManager.Repository.Repository<DBManager.Entities.Bill> rep = new DBManager.Repository.Repository<DBManager.Entities.Bill>();
+		Repository<DBManager.Entities.Bill> rep = new Repository.Repository<DBManager.Entities.Bill>();
 		
 		var queryResult = rep.AddEntity(b);
 
