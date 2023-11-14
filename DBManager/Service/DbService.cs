@@ -4,7 +4,7 @@ using DBManager.Provider;
 
 namespace DBManager.Service
 {
-    internal class DbService<T> : IDbService<T> where T : Entity
+    public class DbService<T> : IDbService<T> where T : Entity
 	{
 		private IDbProvider _dbProvider;
 
