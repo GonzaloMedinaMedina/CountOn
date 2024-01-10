@@ -1,7 +1,7 @@
 ﻿using DBManager.Entities;
 using DBManager.QueryResults;
 
-namespace CountOn.Repository
+namespace Service.Repository
 {
 	public interface IRepository<T> where T : Entity
 	{

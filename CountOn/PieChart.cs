@@ -1,4 +1,4 @@
-﻿using CountOn.Repository;
+﻿using Service.Repository;
 using DBManager.Entities;
 using PSC.Blazor.Components.Chartjs.Models.Common;
 using PSC.Blazor.Components.Chartjs.Models.Pie;
@@ -26,8 +26,9 @@ namespace CountOn
 				}
 			};
 
-			var billTypes = billDateSummary.GetBillTypes().ToList();
-			config.Data.Labels = billTypes.ConvertAll(x => x.ToString());
+			IDictionary<BillType, List<Bill>> billTypes = billDateSummary.GetBillTypes();
+			IList<BillType> billTypesList = billTypes.Keys.ToList();
+			config.Data.Labels = billTypesList.ToList().ConvertAll(x => x.ToString());
 			config.Data.Datasets.Add(new PieDataset()
 			{
 				Label = "Pie chart Label",

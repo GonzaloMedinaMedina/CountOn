@@ -1,6 +1,7 @@
-﻿using DBManager.Entities;
+﻿
+using DBManager.Entities;
 
-namespace CountOn.Repository
+namespace Service.Repository
 {
     public class BillDateSummary : IBillDateSummary
     {

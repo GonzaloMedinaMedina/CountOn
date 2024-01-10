@@ -1,7 +1,6 @@
-﻿
-using PSC.Blazor.Components.Chartjs.Models.Bar;
+﻿using PSC.Blazor.Components.Chartjs.Models.Bar;
 using PSC.Blazor.Components.Chartjs.Models.Common;
-using CountOn.Repository;
+using Service.Repository;
 
 namespace CountOn
 {

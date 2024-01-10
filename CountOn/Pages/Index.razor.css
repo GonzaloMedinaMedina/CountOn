@@ -9,8 +9,12 @@
     margin: 10px;
 }
 
-.blue {
-    background-color:lightskyblue;
+.light-blue {
+    background-color: lightblue;
+}
+
+.blue-gray {
+    background-color: lightsteelblue
 }
 
 .white {
@@ -36,16 +40,39 @@
     padding: 10px;
 }
 
+.bill-container {
+    margin-top: 1%;
+    background-color: white;
+    border: 3px solid black;
+    border-radius: 10px;
+}
+
 .bill-elements-header {
     display: flex;
 }
 
 .bill-element {
-    margin-top: 1%;
+    border-width: 4px;
+    padding-top: 1%;
+    padding-bottom: 1%;
     display: flex;
 }
 
-.bill-text {
-    flex:1;
-    text-align:center;
+.bill-element:hover {
+    background-color: lightsteelblue;
+    cursor: pointer;
+    border: 1px solid black;
+    border-radius: 10px;
 }
+
+.bill-text {
+    flex: 1;
+    text-align: center;
+}
+
+.date-element {
+    text-align: center;
+    background-color:dodgerblue;
+}
+
+div{ border-radius: 10px}

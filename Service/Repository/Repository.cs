@@ -3,7 +3,7 @@ using DBManager.Provider;
 using DBManager.QueryResults;
 using DBManager.Service;
 
-namespace CountOn.Repository
+namespace Service.Repository
 {
 	public class Repository<T> : IRepository<T> where T : Entity
 	{

@@ -1,6 +1,6 @@
 ﻿@page "/"
 @using PSC.Blazor.Components.Chartjs.Interfaces;
-@using Repository;
+@using Service.Repository;
 @using System.Text.Json;
 
 <div class="flex">
@@ -9,37 +9,72 @@
 		<div class="top-left-button p-1" @onclick="(e => NavigateToBillPage())">+</div>
 	</div>
 
-	<div class="billing-container blue">
-		
-		<div class="p-2">
-			<button @onclick="(e => GoBackToBarChart())">Back</button>
+	<div class="billing-container light-blue">
+		@if (_config.GetType() == typeof(BarChartConfig))
+		{
+			<div class="d-flex p-3">
+				<div class="text-center flex-grow-1">
+					<label>From:</label>
+					<input type="date" id="date-from" name="from" @onchange="(e => UpdateDates(ref fromDate, DateTime.Parse(e.Value.ToString())))">
+				</div>
+
+				<div class="text-center flex-grow-1">
+					<label>To:</label>
+					<input type="date" id="date-to" name="to" @onchange="(e => UpdateDates(ref toDate, DateTime.Parse(e.Value.ToString())))">
+				</div>
+			</div>
+		}
+		<div class="p-2 white">
+			@if (_config.GetType() == typeof(PieChartConfig))
+			{
+				<button @onclick="(e => GoBackToBarChart())">Back</button>
+			}
 			<Chart Config="_config" @ref="_chart"></Chart>
 		</div>
 
-		<div class="p-2 blue">
+		<div class="p-2">
 			<div class="bill-elements-header white">
 				<div class="bill-text">Name</div>
 				<div class="bill-text">Price</div>
 				<div class="bill-text">Date</div>
 			</div>
 
-			@foreach (var billsInDate in billsByDate.Reverse())
-			{
-				var bills = billsInDate.GetAllBills();
-				@if (bills.Any())
+			@{
+				void RenderBills(IList<DBManager.Entities.Bill> bills, string date)
 				{
-					<div>
-						<div>@billsInDate.GetDate().ToString()</div>
-						@foreach (var bill in bills)
-						{
-							<div class="bill-element white" @onclick="(e => NavigateToBillPage(JsonSerializer.Serialize<DBManager.Entities.Bill>(bill)))">
-								<div class="bill-text">@bill.Name</div>
-								<div class="bill-text">@bill.Price</div>
-								<div class="bill-text">@bill.BillDate</div>
-							</div>
-						}
-					</div>
+					@if (bills.Any())
+					{
+						<div class="bill-container">
+							<div class="date-element">@date</div>
+							@foreach (var bill in bills)
+							{
+								<div class="bill-element" @onclick="(e => NavigateToBillPage(JsonSerializer.Serialize<DBManager.Entities.Bill>(bill)))">
+									<div class="bill-text">@bill.Name</div>
+									<div class="bill-text">@bill.Price</div>
+									<div class="bill-text">@bill.BillDate.ToString("h:mm")</div>
+								</div>
+							}
+						</div>
+					}
 				}
+
+				void RenderBillsInDate()
+				{
+					if (selectedBill != null)
+					{
+						RenderBills(selectedBill.GetAllBills(), selectedBill.GetDate().ToString("dd/MM/yyyy"));
+					}
+					else
+					{
+						@foreach (var billsInDate in billsByDate.Reverse())
+						{
+							var bills = billsInDate.GetAllBills();
+							RenderBills(bills, @billsInDate.GetDate().ToString("dd/MM/yyyy"));
+						}
+					}
+				}
+
+				RenderBillsInDate();
 			}
 		</div>
 	</div>
@@ -54,11 +89,26 @@
 	private IList<IBillDateSummary> billsByDate = new List<IBillDateSummary>();
 	private IBillDateSummary selectedBill = null;
 
+	private DateTime fromDate;
+	private DateTime toDate;
+
 	protected override void OnInitialized()
 	{
-		BillRepository rep = new BillRepository();
-		billsByDate = rep.GetBillsByDateRange(DateTime.Today.AddDays(-7), DateTime.Today);
+		SetBillsByDateRange(DateTime.Today.AddDays(-7), DateTime.Today);
 		_config = GetChartConfig();
+	}
+
+	private void UpdateDates(ref DateTime variable, DateTime valueToAssign)
+	{
+		variable = valueToAssign;
+		SetBillsByDateRange(fromDate, toDate);
+		_config = GetChartConfig();
+		StateHasChanged();
+	}
+	private void SetBillsByDateRange(DateTime from, DateTime to)
+	{
+		BillRepository rep = new BillRepository();
+		billsByDate = rep.GetBillsByDateRange(from, to);
 	}
 
 	private IChartConfig GetChartConfig()

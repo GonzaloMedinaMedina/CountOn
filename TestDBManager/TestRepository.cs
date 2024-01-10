@@ -1,6 +1,6 @@
 using DBManager.Entities;
-using DBManager.Repository;
 using DBManager.QueryResults;
+using Service.Repository;
 
 namespace TestDBManager
 {

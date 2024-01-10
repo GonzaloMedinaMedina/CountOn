@@ -1,6 +1,5 @@
-﻿using DBManager.Entities;
-
-namespace CountOn.Repository
+﻿
+namespace Service.Repository
 {
     public interface IBillRepository
     {

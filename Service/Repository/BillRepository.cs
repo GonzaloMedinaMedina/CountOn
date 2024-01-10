@@ -1,8 +1,8 @@
-﻿using DBManager.Provider;
+﻿using DBManager.QueryResults;
+using DBManager.Provider;
 using DBManager.Entities;
-using DBManager.QueryResults;
 
-namespace CountOn.Repository
+namespace Service.Repository
 {
     public class BillRepository : IBillRepository
     {

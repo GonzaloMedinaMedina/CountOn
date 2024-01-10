@@ -1,10 +1,15 @@
-﻿<div>@msg</div>
+﻿@using Service.Repository;
 <Chart Config="_config1" @ref="_chart1"></Chart>
 
 @code {
+    [Parameter]
+    public IList<IBillDateSummary> billsByDate { get; set; }
+
+    [Parameter]
+    public Func<CallbackGenericContext, ValueTask>? onClickAsync { get; set; }
+
     private BarChartConfig _config1;
     private Chart _chart1;
-    private string msg = "hello";
 
     protected override void OnInitialized()
     {
@@ -43,19 +48,15 @@
                             }
                         }
                     },
-                    OnClickAsync = clickAsync
+                    OnClickAsync = onClickAsync
                 }
             };
 
-        decimal num1 = 500;
-        decimal num2 = 200;
-
-        _config1.Data.Labels = new List<string>() { "January", "February", "March", "April", "May", "June", "July" };
+        _config1.Data.Labels = getXLabels();
         _config1.Data.Datasets.Add(new BarDataset()
             {
                 Label = "Value",
-                Data = new List<decimal?>() {
-             65, 59, 80, 81, 56, 55, 40 },
+                Data = getYValues(),
                 BackgroundColor = new List<string>() { "rgb(255, 0, 0)" },
                 BorderColor = new List<string>() { "rgb(255, 0, 0)" },
                 BorderWidth = 3,
@@ -64,13 +65,26 @@
 
     }
 
-    public ValueTask clickAsync(CallbackGenericContext value)
+    private List<decimal?> getYValues()
     {
-        msg = $"Dataset index: {value.DatasetIndex} - " +
-                        $"Value index: {value.DataIndex} - " +
-                        $"Value: {value.Value}";
-        StateHasChanged();
+        List<decimal?> bills = new List<decimal?>();
+        foreach(var billDateSummary in billsByDate)
+        {
+            bills.Add(billDateSummary.GetTotal());
+        }
 
-        return ValueTask.CompletedTask;
+        return bills;
+    }
+
+    private List<string> getXLabels()
+    {
+        List<string> result = new List<string>();
+        foreach (var billDateSummary in billsByDate)
+        {
+            DateTime date = billDateSummary.GetDate();
+            result.Add(date.DayOfWeek.ToString() + "\n" + date.Day.ToString() + "/" + date.Month.ToString());            
+        }
+
+        return result;
     }
 }

@@ -1,4 +1,5 @@
-﻿using DBManager.Repository;
+﻿
+using Service.Repository;
 
 namespace TestDBManager
 {
@@ -15,7 +16,7 @@ namespace TestDBManager
         {
             var bills = _billRepository.GetBillsByDate(DateTime.Now);
 
-            Assert.True(bills.Count() == 1);
+            Assert.True(bills.GetAllBills().Count() == 1);
         }
 
         [Fact]
@@ -23,7 +24,7 @@ namespace TestDBManager
         {
 			var bills = _billRepository.GetBillsByDate(DateTime.Now.AddDays(-5));
             
-			Assert.True(bills.Count() == 0);
+			Assert.True(bills.GetAllBills().Count() == 0);
 		}
 
         [Fact]
@@ -31,13 +32,13 @@ namespace TestDBManager
         {
 			var bills = _billRepository.GetBillsByDate(DateTime.Now.AddDays(1));
 
-			Assert.True(bills.Count() == 0);
+			Assert.True(bills.GetAllBills().Count() == 0);
 		}
 
         public void GetBillsByRangeDateMustReturnDictionaryWithEntriesForEachDateInRange()
         {
             var bills = _billRepository.GetBillsByDateRange(DateTime.Now.AddDays(-2), DateTime.Now.AddDays(2));
-            Assert.True(bills.Keys.Count == 5);
+            Assert.True(bills.Count == 5);
         }
     }
 }
