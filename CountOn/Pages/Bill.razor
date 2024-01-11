@@ -49,23 +49,24 @@
 			RenderProperty("date");
 		}
 	</div>
-	@if (billObject == null)
-	{
-		<div class="buttons-container p-2 w-100">
-			<div class="buttons-container w-50">
-				<div class="red button p-1">Cancel</div>
-			</div>
-			<div class="buttons-container w-50">
-				<div class="green button p-1" @onclick="(e => SaveBill())">Save</div>
-			</div>
+	<div class="buttons-container p-2 w-100">
+		<div class="buttons-container w-50">
+			<div class="red button p-1" @onclick="(e => NavigateToBillPage())">Cancel</div>
 		</div>
-	}
-	else
-	{
-		<div class="buttons-container p-2 w-100">
-			<div class="green button p-1">Edit</div>
-		</div>
-	}
+		@if (billObject == null)
+		{
+		
+				<div class="buttons-container w-50">
+					<div class="green button p-1" @onclick="(e => SaveBill())">Save</div>
+				</div>
+		}
+		else
+		{
+			<div class="buttons-container p-2 w-100">
+				<div class="green button p-1">Edit</div>
+			</div>
+		}
+	</div>
 </div>
 
 @functions {
@@ -116,6 +117,12 @@
 		/*
 		 * TODO: Ad error message
 		 */
+	}
+	
+	private void NavigateToBillPage(string JsonBill = "")
+	{
+	@inject NavigationManager navManager;
+		navManager.NavigateTo("/");
 	}
 }
 
