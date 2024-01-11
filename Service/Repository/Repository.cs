@@ -32,5 +32,10 @@ namespace Service.Repository
 		{
 			return _dbService.GetEntityById(id);
 		}
+
+		public QueryResult RemoveEntity(T entity)
+		{
+			return _dbService.RemoveEntity(entity);
+		}
 	}
 }

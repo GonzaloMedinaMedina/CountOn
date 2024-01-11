@@ -1,6 +1,8 @@
 ﻿using DBManager.Entities;
 using DBManager.QueryResults;
 using DBManager.Provider;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore;
 
 namespace DBManager.Service
 {
@@ -70,10 +72,24 @@ namespace DBManager.Service
             return context.ExecuteQuery(GetEntityById);
         }
 
-		public QueryResult ExecuteQuery(Func<Context.DbContext, QueryResult> queryFunc)
+		public QueryResult RemoveEntity(T entity)
 		{
+			Func<Context.DbContext, QueryResult> RemoveEntity = context =>
+			{
+				bool result = false;
+				T entityToDelete = context.Set<T>().FirstOrDefault(T => T.Id == entity.Id);
+
+				if (entityToDelete != null)
+				{
+					EntityEntry<T> entityResult = context.Remove(entityToDelete);
+					result = entityResult.State == EntityState.Deleted;
+				}
+
+				return new QueryResult(result);
+			};
+
 			var context = _dbProvider.GetDbContext();
-			return context.ExecuteQuery(queryFunc);
+			return context.ExecuteQuery(RemoveEntity);
 		}
 	}
 }

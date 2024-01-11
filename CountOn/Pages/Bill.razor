@@ -65,6 +65,9 @@
 			<div class="buttons-container p-2 w-100">
 				<div class="green button p-1">Edit</div>
 			</div>
+			<div class="buttons-container w-50">
+				<div class="red button p-1" @onclick="(e => RemoveBill())">Remove</div>
+			</div>
 		}
 	</div>
 </div>
@@ -121,8 +124,20 @@
 	
 	private void NavigateToBillPage(string JsonBill = "")
 	{
-	@inject NavigationManager navManager;
+		@inject NavigationManager navManager;
 		navManager.NavigateTo("/");
+	}
+
+	private void RemoveBill()
+	{
+		Repository<DBManager.Entities.Bill> rep = new Repository<DBManager.Entities.Bill>();
+		var result = rep.RemoveEntityById(billObject);
+
+		if (result.GetResult())
+		{
+			NavigateToBillPage();
+			Console.WriteLine("Removed bill ", billObject.Id);
+		}
 	}
 }
 
