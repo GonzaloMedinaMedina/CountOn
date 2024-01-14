@@ -23,9 +23,11 @@ namespace DBManager.Service
 		{
 			Func<Context.DbContext, CreateQueryResult<T>> AddEntityFunc = context =>
 			{
-				if (entity.Id != 0)
+				var entities = context.Set<T>().AsEnumerable();
+				bool result = true;
+
+				if (entity.Id == -1)
 				{
-					var entities = context.Set<T>().AsEnumerable();
 					int lastId = 0;
 
 					if (entities.Any())
@@ -36,12 +38,12 @@ namespace DBManager.Service
 					entity.SetId(lastId + 1);
 					context.Add(entity);
 				}
-				else
+				else if (entities.Any(x => x.Id == entity.Id))
 				{
-					context.Update(entity);
+					result = false;
 				}
 
-				return new CreateQueryResult<T>(entity, true);
+				return new CreateQueryResult<T>(entity, result);
 			};
 
 			var context = _dbProvider.GetDbContext();
@@ -90,6 +92,26 @@ namespace DBManager.Service
 
 			var context = _dbProvider.GetDbContext();
 			return context.ExecuteQuery(RemoveEntity);
+		}
+
+		public CreateQueryResult<T> UpdateEntity(T entity) 
+		{
+			Func<Context.DbContext, CreateQueryResult<T>> UpdateEntity = context =>
+			{
+				T entityToUpdate = context.Set<T>().FirstOrDefault(T => T.Id == entity.Id);
+
+				if (entityToUpdate != null)
+				{
+					context.Entry(entityToUpdate).State = EntityState.Detached;
+					var updatedEntity = context.Update(entity);
+					return new CreateQueryResult<T>(updatedEntity.Entity, true);
+				}
+
+				return new CreateQueryResult<T>(null, false);
+			};
+
+			var context = _dbProvider.GetDbContext();
+			return context.ExecuteQuery(UpdateEntity);
 		}
 	}
 }

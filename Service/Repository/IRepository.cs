@@ -8,6 +8,7 @@ namespace Service.Repository
 		CreateQueryResult<T> AddEntity(T entity);
 		ReadQueryResult<T> GetAllEntities();
         ReadQueryResult<T> GetEntityById(int id);
-		QueryResult RemoveEntity(T entity);		
+		QueryResult RemoveEntity(T entity);
+		CreateQueryResult<T> UpdateEntity(T entity);
 	}
 }

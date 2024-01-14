@@ -46,7 +46,7 @@ namespace TestDBManager
         }
 
         [Fact]
-        public void RemoveEntityByIdMustReturnTrueWhenEntityIsRemoved()
+        public void RemoveEntitydMustReturnTrueWhenEntityIsRemoved()
         {
             QueryResult billRemovedQueryResult = new QueryResult();
 
@@ -57,7 +57,7 @@ namespace TestDBManager
 		}
 
 		[Fact]
-		public void RemoveEntityByIdMustReturnFalseIfEntityIsNotRemoved()
+		public void RemoveEntityMustReturnFalseIfEntityIsNotRemoved()
 		{
 			QueryResult billRemovedQueryResult = new QueryResult();
 
@@ -67,6 +67,51 @@ namespace TestDBManager
 
 			Assert.Equal(4, _repository.GetAllEntities().GetEntities().Count());
 			Assert.False(billRemovedQueryResult.GetResult());
+		}
+
+        [Fact]
+        public void AddEntityMustSaveEntityInDB()
+        {
+			var bill = new Bill("test bill", 50, BillType.HOBBY, DateTime.Today);
+
+			var savedBill = _repository.AddEntity(bill).GetEntity();
+			var retrievedBill = _repository.GetEntityById(savedBill.Id).GetEntities().First();
+            var allBills = _repository.GetAllEntities().GetEntities();
+
+            Assert.Equal(savedBill.Id, retrievedBill.Id);
+            Assert.Equal(5, allBills.Count());
+		}
+
+		[Fact]
+		public void AddEntityMustAvoidSaveEntityAndReturnFalseAsResultIfEntityAlreadyExistsInDB()
+		{
+			var bill = new Bill("test bill", 50, BillType.HOBBY, DateTime.Today);
+
+			var savedBill = _repository.AddEntity(bill).GetEntity();
+            var reSavedBill = _repository.AddEntity(savedBill);
+			var allBills = _repository.GetAllEntities().GetEntities();
+
+			Assert.Equal(savedBill.Id, reSavedBill.GetEntity().Id);
+            Assert.False(reSavedBill.GetResult());
+			Assert.Equal(5, allBills.Count());
+		}
+
+		[Fact]
+        public void UpdateEntityMustUpdateEntityInDBWithNewChanges()
+        {
+            var bill = new Bill("test bill", 50, BillType.HOBBY, DateTime.Today);
+
+			var savedBill = _repository.AddEntity(bill).GetEntity();
+            savedBill.Price = 100;
+			savedBill.Name = "updated bill";
+			savedBill.BillType = BillType.FOOD;
+
+			_repository.UpdateEntity(savedBill);
+			var billUpdatedQueryResult =_repository.GetEntityById(savedBill.Id).GetEntities().First();
+
+			Assert.Equal(100, billUpdatedQueryResult.Price);
+			Assert.Equal("updated bill", billUpdatedQueryResult.Name);
+			Assert.Equal(BillType.FOOD, billUpdatedQueryResult.BillType);
 		}
 	}
 }
