@@ -6,7 +6,22 @@ namespace DBManager.Context
 {
 	public class DbContext : Microsoft.EntityFrameworkCore.DbContext, IDbContext
 	{
+		private static DbContext instance;
 		public DbSet<Bill> Bills { get; set; }
+
+		public static DbContext Instance
+		{
+			get
+			{
+				if (instance == null)
+				{
+					instance = new DbContext();
+				}
+
+				return instance;
+			}
+		}
+
 		public DbContext()
 		{
 			Database.EnsureCreated();
@@ -44,7 +59,6 @@ namespace DBManager.Context
 			catch (Exception ex)
 			{
 				Console.WriteLine(ex.Message);
-
 			}
 
 			return queryResult;

@@ -7,7 +7,7 @@ namespace DBManager.Provider
 		public DbProvider() { }
 		public IDbContext GetDbContext()
 		{
-			return new DbContext();
+			return DbContext.Instance;
 		}
 	}
 }
