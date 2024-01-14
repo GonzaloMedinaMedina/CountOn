@@ -58,42 +58,37 @@
 		}
 	<div class="buttons-container p-2 w-100">
 		
+		@{
+			void RenderButton(string text, ButtonDelegate buttonMethod, string color)
+			{
+				string cssClass = $"{color} button";
+
+				<div class="button-container">
+					<div class=@cssClass @onclick="(e => buttonMethod())">@text</div>
+				</div>
+			}
+		}
+		
 		@if (billObject == null)
 		{
-			<div class="button-container">
-				<div class="red button" @onclick="(e => NavigateToBillPage())">Back</div>
-			</div>
-
-			<div class="button-container">
-				<div class="green button" @onclick="(e => SaveBill())">Save</div>
-			</div>
+			RenderButton("Back", NavigateToBillPage, "red");
+			RenderButton("Save", SaveBill, "green");
 		}
 		else
 		{
 			@if (editModeOn)
 			{
-				<div class="button-container">
-					<div class="red button" @onclick="(e => SwitchEditMode())">Back</div>
-				</div>
-
-				<div class="button-container">
-					<div class="green button" @onclick="(e => UpdateBill())">Save</div>
-				</div>
+				RenderButton("Back", SwitchEditMode, "red");
+				RenderButton("Save", UpdateBill, "green");
 			}
 			else
 			{
-				<div class="button-container">
-					<div class="red button" @onclick="(e => NavigateToBillPage())">Back</div>
-				</div>
+				RenderButton("Back", NavigateToBillPage, "red");
+				RenderButton("Edit", SwitchEditMode, "green");
 
-				<div class="button-container">
-					<div class="green button" @onclick="(e => SwitchEditMode())">Edit</div>
-				</div>
 			}
+			RenderButton("Remove", RemoveBill, "red");
 
-			<div class="button-container">
-				<div class="red button" @onclick="(e => RemoveBill())">Remove</div>
-			</div>
 		}
 	</div>
 </div>
@@ -132,6 +127,8 @@
 		}
 	}
 
+	public delegate void ButtonDelegate();
+
 	protected void SaveBill()
 	{
 		int price =  Int32.Parse(properties["price"]);
@@ -152,7 +149,7 @@
 		 */
 	}
 	
-	private void NavigateToBillPage(string JsonBill = "")
+	private void NavigateToBillPage()
 	{
 		@inject NavigationManager navManager;
 		navManager.NavigateTo("/");
