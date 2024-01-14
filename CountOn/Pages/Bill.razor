@@ -5,27 +5,25 @@
 @using Service.Repository;
 
 <div class="bill-container">
-	<div class="properties-container">
 
 		@{
 			void RenderInputField(string propertyName)
 			{
 				if (propertyName == "type")
 				{
-					<select @bind=@properties[propertyName] name="billType" id="billType">
+					<select class="property-value" @bind=@properties[propertyName] name="billType" id="billType">
 						@foreach (var billType in Enum.GetNames(typeof(DBManager.Entities.BillType)))
 						{
-							<option value=@billType>@billType</option>
+							<option class="property-value" value=@billType>@billType</option>
 						}
 					</select>
 
 				}
 				else
 				{
-					<input @bind=@properties[propertyName] type="text" name=@propertyName />
+					<input class="property-value" @bind=@properties[propertyName] type="text" name=@propertyName />
 				}
 			}
-
 			void RenderProperty(string propertyName)
 			{
 				Boolean billIsNull = billObject == null;
@@ -35,12 +33,12 @@
 					return;
 				}
 
-				<div class="white d-inline-flex p-1 m-2">
+				<div class="property-container">
 					<div class="property-label">@propertyName.First().ToString().ToUpper()@propertyName.Substring(1)</div>
 
 					@if (propertyName == "date")
 					{
-						<div>@properties[propertyName]</div>
+						<div class="property-value">@properties[propertyName]</div>
 					}
 					else if (billIsNull || editModeOn)
 					{
@@ -48,7 +46,7 @@
 					}
 					else
 					{
-						<div>@properties[propertyName]</div>
+						<div class="property-value">@properties[propertyName]</div>
 					}
 				</div>
 			}
@@ -58,41 +56,43 @@
 			RenderProperty("type");
 			RenderProperty("date");
 		}
-	</div>
 	<div class="buttons-container p-2 w-100">
 		
 		@if (billObject == null)
 		{
-			<div class="buttons-container w-50">
-				<div class="red button p-1" @onclick="(e => NavigateToBillPage())">Back</div>
+			<div class="button-container">
+				<div class="red button" @onclick="(e => NavigateToBillPage())">Back</div>
 			</div>
 
-			<div class="buttons-container w-50">
-				<div class="green button p-1" @onclick="(e => SaveBill())">Save</div>
+			<div class="button-container">
+				<div class="green button" @onclick="(e => SaveBill())">Save</div>
 			</div>
 		}
 		else
 		{
-			<div class="buttons-container p-2 w-100">
-				@if (editModeOn)
-				{
-					<div class="buttons-container w-50">
-						<div class="red button p-1" @onclick="(e => SwitchEditMode())">Back</div>
-					</div>
+			@if (editModeOn)
+			{
+				<div class="button-container">
+					<div class="red button" @onclick="(e => SwitchEditMode())">Back</div>
+				</div>
 
-					<div class="green button p-1" @onclick="(e => UpdateBill())">Save</div>
-				}
-				else
-				{
-					<div class="buttons-container w-50">
-						<div class="red button p-1" @onclick="(e => NavigateToBillPage())">Back</div>
-					</div>
+				<div class="button-container">
+					<div class="green button" @onclick="(e => UpdateBill())">Save</div>
+				</div>
+			}
+			else
+			{
+				<div class="button-container">
+					<div class="red button" @onclick="(e => NavigateToBillPage())">Back</div>
+				</div>
 
-					<div class="green button p-1" @onclick="(e => SwitchEditMode())">Edit</div>
-				}
-			</div>
-			<div class="buttons-container w-50">
-				<div class="red button p-1" @onclick="(e => RemoveBill())">Remove</div>
+				<div class="button-container">
+					<div class="green button" @onclick="(e => SwitchEditMode())">Edit</div>
+				</div>
+			}
+
+			<div class="button-container">
+				<div class="red button" @onclick="(e => RemoveBill())">Remove</div>
 			</div>
 		}
 	</div>

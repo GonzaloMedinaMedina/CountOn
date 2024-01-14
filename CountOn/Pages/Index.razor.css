@@ -3,6 +3,12 @@
     display: flex;
 }
 
+.chart-container {
+    display: flex;
+    padding: 2px;
+    background-color: white;
+}
+
 .billing-container {
     flex: 90%;
     padding: 10px;
@@ -36,8 +42,15 @@
 }
 
 .top-left-button-container {
-    flex: 5%;
+    margin: 10px;
     padding: 10px;
+}
+
+.bill-grid {
+    border: 3px solid black;
+    padding: 2%;
+    margin: 1%;
+    background-color: white;
 }
 
 .bill-container {
@@ -48,7 +61,11 @@
 }
 
 .bill-elements-header {
+    background-color: dodgerblue;
+    border: 3px solid black;
+    padding: 1%;
     display: flex;
+    font-weight: 600;
 }
 
 .bill-element {
@@ -71,8 +88,10 @@
 }
 
 .date-element {
+    padding-bottom: 1%;
+    font-weight: 600;
     text-align: center;
-    background-color:dodgerblue;
+    background-color: dodgerblue;
 }
 
 div{ border-radius: 10px}
