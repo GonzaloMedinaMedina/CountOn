@@ -56,13 +56,13 @@
 .bill-container {
     margin-top: 1%;
     background-color: white;
-    border: 3px solid black;
+    border: 2px solid black;
     border-radius: 10px;
 }
 
 .bill-elements-header {
     background-color: dodgerblue;
-    border: 3px solid black;
+    border: 2px solid black;
     padding: 1%;
     display: flex;
     font-weight: 600;
@@ -70,9 +70,10 @@
 
 .bill-element {
     border-width: 4px;
-    padding-top: 1%;
-    padding-bottom: 1%;
+    padding-top: 5%;
+    padding-bottom: 5%;
     display: flex;
+    margin: 1%;
 }
 
 .bill-element:hover {
