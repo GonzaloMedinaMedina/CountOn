@@ -8,9 +8,28 @@
 	<div class="properties-container">
 
 		@{
+			void RenderInputField(string propertyName)
+			{
+				if (propertyName == "type")
+				{
+					<select @bind=@properties[propertyName] name="billType" id="billType">
+						@foreach (var billType in Enum.GetNames(typeof(DBManager.Entities.BillType)))
+						{
+							<option value=@billType>@billType</option>
+						}
+					</select>
+
+				}
+				else
+				{
+					<input @bind=@properties[propertyName] type="text" name=@propertyName />
+				}
+			}
+
 			void RenderProperty(string propertyName)
 			{
 				Boolean billIsNull = billObject == null;
+
 				if (propertyName == "date" && billIsNull)
 				{
 					return;
@@ -19,22 +38,13 @@
 				<div class="white d-inline-flex p-1 m-2">
 					<div class="property-label">@propertyName.First().ToString().ToUpper()@propertyName.Substring(1)</div>
 
-					@if (billIsNull || editModeOn)
+					@if (propertyName == "date")
 					{
-						if (propertyName == "type")
-						{
-							<select @bind=@properties[propertyName] name ="billType" id="billType">
-								@foreach (var billType in Enum.GetNames(typeof(DBManager.Entities.BillType)))
-								{
-									<option value=@billType>@billType</option>
-								}
-							</select>
-							
-						}
-						else
-						{
-							<input @bind=@properties[propertyName] type="text" name=@propertyName />
-						}
+						<div>@properties[propertyName]</div>
+					}
+					else if (billIsNull || editModeOn)
+					{
+						RenderInputField(propertyName);
 					}
 					else
 					{
