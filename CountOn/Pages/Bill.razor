@@ -19,7 +19,7 @@
 				<div class="white d-inline-flex p-1 m-2">
 					<div class="property-label">@propertyName.First().ToString().ToUpper()@propertyName.Substring(1)</div>
 
-					@if (billIsNull)
+					@if (billIsNull || editModeOn)
 					{
 						if (propertyName == "type")
 						{
@@ -50,20 +50,36 @@
 		}
 	</div>
 	<div class="buttons-container p-2 w-100">
-		<div class="buttons-container w-50">
-			<div class="red button p-1" @onclick="(e => NavigateToBillPage())">Cancel</div>
-		</div>
+		
 		@if (billObject == null)
 		{
-		
-				<div class="buttons-container w-50">
-					<div class="green button p-1" @onclick="(e => SaveBill())">Save</div>
-				</div>
+			<div class="buttons-container w-50">
+				<div class="red button p-1" @onclick="(e => NavigateToBillPage())">Back</div>
+			</div>
+
+			<div class="buttons-container w-50">
+				<div class="green button p-1" @onclick="(e => SaveBill())">Save</div>
+			</div>
 		}
 		else
 		{
 			<div class="buttons-container p-2 w-100">
-				<div class="green button p-1">Edit</div>
+				@if (editModeOn)
+				{
+					<div class="buttons-container w-50">
+						<div class="red button p-1" @onclick="(e => SwitchEditMode())">Back</div>
+					</div>
+
+					<div class="green button p-1" @onclick="(e => UpdateBill())">Save</div>
+				}
+				else
+				{
+					<div class="buttons-container w-50">
+						<div class="red button p-1" @onclick="(e => NavigateToBillPage())">Back</div>
+					</div>
+
+					<div class="green button p-1" @onclick="(e => SwitchEditMode())">Edit</div>
+				}
 			</div>
 			<div class="buttons-container w-50">
 				<div class="red button p-1" @onclick="(e => RemoveBill())">Remove</div>
@@ -77,8 +93,12 @@
 	[Parameter]
 	public String billString { get; set; }
 
+	/* Current bill */
 	private DBManager.Entities.Bill billObject { get; set; }
+	/* Dictionary to store bill prperties */
 	private Dictionary<string, string> properties = new Dictionary<string, string>();
+	/* Flag to indicate if the user wants to edit the bill */
+	private bool editModeOn = false;
 }
 
 @code {
@@ -131,12 +151,36 @@
 	private void RemoveBill()
 	{
 		Repository<DBManager.Entities.Bill> rep = new Repository<DBManager.Entities.Bill>();
-		var result = rep.RemoveEntityById(billObject);
+		var result = rep.RemoveEntity(billObject);
 
 		if (result.GetResult())
 		{
 			NavigateToBillPage();
 			Console.WriteLine("Removed bill ", billObject.Id);
+		}
+	}
+
+	private void SwitchEditMode()
+	{
+		editModeOn = !editModeOn;
+		StateHasChanged();
+	}
+
+	private void UpdateBill()
+	{
+		if (editModeOn)
+		{
+			Repository<DBManager.Entities.Bill> rep = new Repository<DBManager.Entities.Bill>();
+
+			billObject.Name = properties["title"];
+			billObject.Price = Int32.Parse(properties["price"]);
+			Enum.TryParse(properties["type"], out DBManager.Entities.BillType billType);
+			billObject.BillType = billType;
+
+			var result = rep.UpdateEntity(billObject);
+
+			Console.WriteLine("Updated result ", result.GetResult());
+			SwitchEditMode();
 		}
 	}
 }
