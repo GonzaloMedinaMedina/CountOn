@@ -23,7 +23,7 @@ namespace CountOn
             foreach (var billDateSummary in billsByDate)
             {
                 DateTime date = billDateSummary.GetDate();
-                result.Add(date.DayOfWeek.ToString() + "\n" + date.Day.ToString() + "/" + date.Month.ToString());
+                result.Add(date.DayOfWeek.ToString().Substring(0,3) + "\n" + date.Day.ToString() + "/" + date.Month.ToString());
             }
 
             return result;
@@ -60,12 +60,15 @@ namespace CountOn
                         {
                             Scales.YAxisId, new Axis()
                             {
-                                Stacked = true
+                                Stacked = false,
+                                Display = false
                             }
                         }
                     },
-                    OnClickAsync = onClickAsync
-                }
+                    OnClickAsync = onClickAsync,
+                    Responsive = true,
+                    MaintainAspectRatio = false,
+                }                
             };
 
             _config.Data.Labels = GetXLabels(billsByDate);
