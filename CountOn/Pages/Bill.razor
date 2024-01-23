@@ -104,6 +104,7 @@
 	private Dictionary<string, string> properties = new Dictionary<string, string>();
 	/* Flag to indicate if the user wants to edit the bill */
 	private bool editModeOn = false;
+	@inject IRepository<DBManager.Entities.Bill> rep;
 }
 
 @code {
@@ -135,7 +136,6 @@
 		Enum.TryParse(properties["type"], out DBManager.Entities.BillType type);
 
 		DBManager.Entities.Bill b = new DBManager.Entities.Bill((string)properties["title"], price, type, DateTime.Now);
-		Repository<DBManager.Entities.Bill> rep = new Repository<DBManager.Entities.Bill>();
 		
 		var queryResult = rep.AddEntity(b);
 
@@ -157,7 +157,6 @@
 
 	private void RemoveBill()
 	{
-		Repository<DBManager.Entities.Bill> rep = new Repository<DBManager.Entities.Bill>();
 		var result = rep.RemoveEntity(billObject);
 
 		if (result.GetResult())
@@ -177,8 +176,6 @@
 	{
 		if (editModeOn)
 		{
-			Repository<DBManager.Entities.Bill> rep = new Repository<DBManager.Entities.Bill>();
-
 			billObject.Name = properties["title"];
 			billObject.Price = Int32.Parse(properties["price"]);
 			Enum.TryParse(properties["type"], out DBManager.Entities.BillType billType);

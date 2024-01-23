@@ -92,7 +92,7 @@
 	private Chart _chart;
 
 	private IList<IBillDateSummary> billsByDate = new List<IBillDateSummary>();
-	private IBillDateSummary selectedBill = null;
+	private IBillDateSummary selectedBill;
 
 	private DateTime fromDate;
 	private DateTime toDate;
@@ -112,7 +112,7 @@
 	}
 	private void SetBillsByDateRange(DateTime from, DateTime to)
 	{
-		BillRepository rep = new BillRepository();
+		@inject IBillRepository rep;
 		billsByDate = rep.GetBillsByDateRange(from, to);
 	}
 

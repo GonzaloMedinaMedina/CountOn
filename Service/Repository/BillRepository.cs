@@ -6,8 +6,12 @@ namespace Service.Repository
 {
     public class BillRepository : IBillRepository
     {
-        private Repository<Bill> _repository = new Repository<Bill>();
-        public BillRepository() { }
+        private IRepository<Bill> _repository;
+        public BillRepository(IRepository<Bill> repository) 
+        {
+            _repository = repository;
+		}
+
         public BillRepository(IDbProvider dbProvider) 
         {
             _repository = new Repository<Bill>(dbProvider);

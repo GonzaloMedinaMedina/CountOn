@@ -3,20 +3,20 @@ using DBManager.QueryResults;
 using DBManager.Provider;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore;
+using DBManager.Context;
 
 namespace DBManager.Service
 {
     public class DbService<T> : IDbService<T> where T : Entity
 	{
-		private IDbProvider _dbProvider;
-
-		public DbService()
+		private readonly IDbContext _dbContext;
+		public DbService(IDbContext dbContext)
 		{
-			_dbProvider = new DbProvider();
+			_dbContext = dbContext;
 		}
 		public DbService(IDbProvider provider)
 		{
-			_dbProvider = provider;
+			_dbContext = provider.GetDbContext();
 		}
 
 		public CreateQueryResult<T> AddEntity(T entity)
@@ -46,8 +46,7 @@ namespace DBManager.Service
 				return new CreateQueryResult<T>(entity, result);
 			};
 
-			var context = _dbProvider.GetDbContext();
-			return context.ExecuteQuery(AddEntityFunc);
+			return _dbContext.ExecuteQuery(AddEntityFunc);
 		}
 	
 		public ReadQueryResult<T> GetAllEntities()
@@ -58,8 +57,7 @@ namespace DBManager.Service
 				return new ReadQueryResult<T>(entities, entities?.Count != 0);
 			};
 
-			var context = _dbProvider.GetDbContext();
-			return context.ExecuteQuery(GetAllEntitiesFunc);
+			return _dbContext.ExecuteQuery(GetAllEntitiesFunc);
 		}
 
 		public ReadQueryResult<T> GetEntityById(int id)
@@ -70,8 +68,7 @@ namespace DBManager.Service
 				return new ReadQueryResult<T>(entity, entity != null);
 			};
 
-            var context = _dbProvider.GetDbContext();
-            return context.ExecuteQuery(GetEntityById);
+            return _dbContext.ExecuteQuery(GetEntityById);
         }
 
 		public QueryResult RemoveEntity(T entity)
@@ -90,8 +87,7 @@ namespace DBManager.Service
 				return new QueryResult(result);
 			};
 
-			var context = _dbProvider.GetDbContext();
-			return context.ExecuteQuery(RemoveEntity);
+			return _dbContext.ExecuteQuery(RemoveEntity);
 		}
 
 		public CreateQueryResult<T> UpdateEntity(T entity) 
@@ -110,8 +106,7 @@ namespace DBManager.Service
 				return new CreateQueryResult<T>(null, false);
 			};
 
-			var context = _dbProvider.GetDbContext();
-			return context.ExecuteQuery(UpdateEntity);
+			return _dbContext.ExecuteQuery(UpdateEntity);
 		}
 	}
 }

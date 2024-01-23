@@ -1,4 +1,8 @@
-﻿namespace CountOn;
+﻿using DBManager.Context;
+using DBManager.Service;
+using Service.Repository;
+
+namespace CountOn;
 
 public static class MauiProgram
 {
@@ -11,6 +15,11 @@ public static class MauiProgram
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 			});
+
+		builder.Services.AddSingleton<IDbContext, DbContext>();
+		builder.Services.AddScoped(typeof(IDbService<>), typeof(DbService<>));
+		builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+		builder.Services.AddScoped<IBillRepository, BillRepository>();
 
 		builder.Services.AddMauiBlazorWebView();
 		#if DEBUG

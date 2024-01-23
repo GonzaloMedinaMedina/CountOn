@@ -9,10 +9,11 @@ namespace Service.Repository
 	{
 		private IDbService<T> _dbService;
 
-		public Repository()
+		public Repository(IDbService<T> dbService)
 		{
-			_dbService = new DbService<T>();
+			_dbService = dbService;
 		}
+
 		public Repository(IDbProvider provider)
 		{
 			_dbService = new DbService<T>(provider);
