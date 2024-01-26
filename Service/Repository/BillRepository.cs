@@ -7,6 +7,8 @@ namespace Service.Repository
     public class BillRepository : IBillRepository
     {
         private IRepository<Bill> _repository;
+
+        public BillRepository() { }
         public BillRepository(IRepository<Bill> repository) 
         {
             _repository = repository;

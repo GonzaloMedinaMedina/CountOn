@@ -1,14 +1,18 @@
-.green {
+.main {
     display: flex;
     flex-direction: column;
-    background-color: darkblue;
-}
-
-
-.main-content {
-    padding: 10px;
+    background-color: whitesmoke;
+    height:100vh;
 }
 
 .header {
     text-align: center;
+    margin-top: 2%;
+}
+
+.navbar-brand {
+    background-color: dodgerblue;
+    padding: 1%;
+    border-radius: 0.375rem; /* 6px */
+    color:white;
 }
