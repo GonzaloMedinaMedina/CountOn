@@ -61,10 +61,14 @@
 							@foreach (var bill in bills)
 							{
 								<div class="bill-element light-blue" @onclick="(e => NavigateToBillPage(JsonSerializer.Serialize<DBManager.Entities.Bill>(bill)))">
-									<div class="bill-text">@bill.Name</div>
-									<div class="bill-text">@bill.Price</div>
-									<div class="bill-text">@bill.BillType</div>
-									<div class="bill-text">@bill.BillDate.ToString("h:mm")</div>
+									<div class="bill-left-element">
+										<div class="align-text-start bill-title">@bill.Name</div>
+										<div class="align-text-start bill-type">@bill.BillType</div>
+									</div>
+									<div class="bill-right-element">
+										<div class="text-center">@bill.Price €</div>
+										<div class="text-center">@bill.BillDate.Hour.ToString("00"):@bill.BillDate.Minute.ToString("00")</div>
+									</div>
 								</div>
 							}
 						</div>

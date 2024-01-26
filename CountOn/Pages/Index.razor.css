@@ -62,6 +62,8 @@
     background-color: white;
     border: 1px solid black;
     border-radius: 10px;
+    display:flex;
+    flex-direction:column;
 }
 
 .bill-elements-header {
@@ -72,10 +74,11 @@
 }
 
 .bill-element {
-    padding-top: 5%;
-    padding-bottom: 5%;
+    padding:5%;
     display: flex;
+    flex-direction:row;
     margin: 1%;
+    box-shadow: inset 0 0 3px black;
 }
 
 .bill-element:hover {
@@ -90,11 +93,34 @@
     text-align: center;
 }
 
+.bill-left-element {
+    flex: 2;
+}
+
+.bill-right-element {
+    flex: 1;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.bill-title {
+    font-size: larger;    
+}
+
+.bill-type {
+    font-size: small;
+}
+
 .date-element {
-    padding-bottom: 1%;
+    padding-top: 1%;
     font-weight: 600;
     text-align: center;
-    background-color: dodgerblue;
+    border-bottom: 1px solid black; /* Add a 1px solid black border around the text */
+    border-radius: 0;
+    width: fit-content;
+    align-self: center;
 }
 
 div{ border-radius: 10px}
