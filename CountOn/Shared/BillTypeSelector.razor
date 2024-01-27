@@ -1,0 +1,17 @@
+﻿<select name="billType" id="billType" @onchange="(e => OnValueChangeHandler(e))" value="ALL">
+	@foreach (var billType in Enum.GetValues(typeof(DBManager.Entities.BillType)))
+	{
+		<option value=@billType>@billType</option>
+	}
+</select>
+
+@code {
+
+	[Parameter]
+	public Action<string> OnValueChange { get; set; }
+
+	private void OnValueChangeHandler(ChangeEventArgs e)
+	{
+		OnValueChange?.Invoke(e.Value.ToString());
+	}
+}

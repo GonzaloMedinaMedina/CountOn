@@ -4,6 +4,7 @@ namespace DBManager.Entities
 {
 	public enum BillType
 	{
+		ALL,
 		HOBBY,
 		FOOD,
 		CLOTHES,
