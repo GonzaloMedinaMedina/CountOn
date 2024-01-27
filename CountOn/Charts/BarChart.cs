@@ -76,7 +76,7 @@ namespace CountOn.Charts
             {
                 Label = "Value",
                 Data = GetYValues(billsByDate),
-                BackgroundColor = new List<string>() { "rgb(255, 0, 0)" },
+                BackgroundColor = new List<string>() { "rgb(0, 0, 0)" },
                 BorderColor = new List<string>() { "rgb(0, 0, 0)" },
                 BorderWidth = 1,
                 Fill = true
