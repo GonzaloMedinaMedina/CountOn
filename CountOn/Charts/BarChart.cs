@@ -2,7 +2,7 @@
 using PSC.Blazor.Components.Chartjs.Models.Common;
 using Service.Repository;
 
-namespace CountOn
+namespace CountOn.Charts
 {
     public class BarChart
     {
@@ -23,13 +23,13 @@ namespace CountOn
             foreach (var billDateSummary in billsByDate)
             {
                 DateTime date = billDateSummary.GetDate();
-                result.Add(date.DayOfWeek.ToString().Substring(0,3) + "\n" + date.Day.ToString() + "/" + date.Month.ToString());
+                result.Add(date.DayOfWeek.ToString().Substring(0, 3) + "\n" + date.Day.ToString() + "/" + date.Month.ToString());
             }
 
             return result;
         }
-    
-        public static BarChartConfig GetBarChartConfig(IList<IBillDateSummary> billsByDate, Func<CallbackGenericContext, ValueTask>? onClickAsync)
+
+        public static BarChartConfig GetBarChartConfig(IList<IBillDateSummary> billsByDate, Func<CallbackGenericContext, ValueTask> onClickAsync)
         {
             BarChartConfig _config = new BarChartConfig()
             {
@@ -68,7 +68,7 @@ namespace CountOn
                     OnClickAsync = onClickAsync,
                     Responsive = true,
                     MaintainAspectRatio = false,
-                }                
+                }
             };
 
             _config.Data.Labels = GetXLabels(billsByDate);
@@ -78,7 +78,7 @@ namespace CountOn
                 Data = GetYValues(billsByDate),
                 BackgroundColor = new List<string>() { "rgb(255, 0, 0)" },
                 BorderColor = new List<string>() { "rgb(0, 0, 0)" },
-                BorderWidth = 3,
+                BorderWidth = 1,
                 Fill = true
             });
 
