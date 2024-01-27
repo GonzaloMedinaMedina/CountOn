@@ -16,8 +16,12 @@
 	<div class="billing-container light-blue box-shadow">
 		<div class="d-flex flex-row">
 			<div class="flex-grow-1 p-3 align-content-center align-self-center">
-				<label for="billType">Type</label>
-				<BillTypeSelector OnValueChange="SetBillTypeFilter"></BillTypeSelector>
+			
+				<BillTypeSelector Values="Enum.GetValues(typeof(DBManager.Entities.BillType)).Cast<DBManager.Entities.BillType>().Select(e => e.ToString()).ToList()"
+					Label="Type" 
+					OnValueChange="SetBillTypeFilter"
+					DefaultValue="@DBManager.Entities.BillType.ALL.ToString()">
+				</BillTypeSelector>
 			</div>
 
 			<div class="d-flex flex-grow-1 flex-column p-3 @(_config.GetType() == typeof(PieChartConfig) ? "disabled" : "")">
@@ -170,5 +174,6 @@
 	private void SetBillTypeFilter(string billType)
 	{
 		billTypeFilter = (DBManager.Entities.BillType)Enum.Parse(typeof(DBManager.Entities.BillType), billType);
+		StateHasChanged();
 	}
 }
