@@ -1,0 +1,29 @@
+﻿<div class="d-flex flex-column dropdown-container box-shadow">
+	<div class="dropdown box-shadow" @onclick="(e => ChangeDropDownVisibility())">@Label</div>
+	<div class="content box-shadow @visibility">
+		@Content
+	</div>
+</div>
+
+@code {
+
+	[Parameter]
+	public string Label { get; set; }
+
+	[Parameter]
+	public RenderFragment Content{ get; set; }
+
+	private string visibility = "d-none";
+
+	private void ChangeDropDownVisibility()
+	{
+		if (visibility == "d-none")
+		{
+			visibility = "d-block";
+		}
+		else
+		{
+			visibility = "d-none";
+		}
+	}
+}

@@ -4,7 +4,8 @@
 
 .chart-container {
     display: flex;
-    padding: 2px;
+    padding: 2%;
+    margin:3%;
     background-color: white;
 }
 

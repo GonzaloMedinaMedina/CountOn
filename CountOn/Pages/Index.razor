@@ -13,38 +13,53 @@
 		}
 	</div>
 	
-	<div class="billing-container light-blue box-shadow">
-		<div class="d-flex flex-row align-items-start">
-			<div class="flex-grow-1 p-3 align-content-center">
-			
+	<DropDownMenu Label="Filters">
+		<Content>
+			<div class="d-flex flex-row align-items-start">
+			<div class="d-flex justify-content-center flex-grow-1 p-1 align-content-center">
 				<BillTypeSelector Values="Enum.GetValues(typeof(DBManager.Entities.BillType)).Cast<DBManager.Entities.BillType>().Select(e => e.ToString()).ToList()"
-					Label="Type" 
-					OnValueChange="SetBillTypeFilter"
-					DefaultValue="@DBManager.Entities.BillType.ALL.ToString()">
+								  Label="Type"
+								  OnValueChange="SetBillTypeFilter"
+								  DefaultValue="@DBManager.Entities.BillType.ALL.ToString()">
 				</BillTypeSelector>
 			</div>
 
-			<div class="d-flex flex-grow-1 flex-column align-items-center p-3 @(_config.GetType() == typeof(PieChartConfig) ? "disabled" : "")">
-				<label class="" for="dates">Dates</label>
-				<div class="d-flex flex-column align-items-end">
-					<div class="text-center p-1">
-						<label>From:</label>
-						<input type="date" id="date-from" name="from" @onchange="(e => UpdateDates(ref fromDate, DateTime.Parse(e.Value.ToString())))">
-					</div>
+			<div class="d-flex flex-grow-1 flex-column align-items-center p-1 @(_config.GetType() == typeof(PieChartConfig) ? "disabled" : "")">
+				<div class="d-flex flex-column align-items-center p-3 white box-shadow">
+					<label class="" for="dates">Dates</label>
+					<div class="d-flex flex-column align-items-end">
+						<div class="text-center p-1">
+							<label>From:</label>
+							<input type="date" id="date-from" name="from" @onchange="(e => UpdateDates(ref fromDate, DateTime.Parse(e.Value.ToString())))">
+						</div>
 
-					<div class="text-center p-1">
-						<label>To:</label>
-						<input type="date" id="date-to" name="to" @onchange="(e => UpdateDates(ref toDate, DateTime.Parse(e.Value.ToString())))">
+						<div class="text-center p-1">
+							<label>To:</label>
+							<input type="date" id="date-to" name="to" @onchange="(e => UpdateDates(ref toDate, DateTime.Parse(e.Value.ToString())))">
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		</Content>
+	</DropDownMenu>
 
-		<div class="chart-container">
-			<Chart Style="flex:1; display:flex" Config="_config" @ref="_chart"></Chart>
-		</div>
+	<DropDownMenu Label="Summary">
+		<Content>
+			<div>summary</div>
+		</Content>
+	</DropDownMenu>
 
-		<div class="bill-grid box-shadow">
+	<DropDownMenu Label="Chart">
+		<Content>
+			<div class="chart-container">
+				<Chart Style="flex:1; display:flex" Config="_config" @ref="_chart"></Chart>
+			</div>
+		</Content>
+	</DropDownMenu>
+
+	<DropDownMenu Label="Bills">
+		<Content>
 			@{
 				void RenderBills(IList<DBManager.Entities.Bill> bills, string date)
 				{
@@ -97,10 +112,10 @@
 
 				RenderBillsInDate();
 			}
-		</div>
-	</div>
-</div>
+		</Content>
+	</DropDownMenu>
 
+</div>
 
 
 @code
