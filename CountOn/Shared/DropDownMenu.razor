@@ -1,5 +1,7 @@
 ﻿<div class="d-flex flex-column dropdown-container box-shadow">
-	<div class="dropdown box-shadow" @onclick="(e => ChangeDropDownVisibility())">@Label</div>
+	<div class="dropdown @(Visibility == "d-none" ? "box-shadow" : "inner-box-shadow") " @onclick="(e => ChangeDropDownVisibility())">
+		<div class="label">@Label</div>
+	</div>
 	<div class="content box-shadow @Visibility">
 		@Content
 	</div>
