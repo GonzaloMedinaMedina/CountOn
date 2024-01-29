@@ -7,6 +7,7 @@ namespace Service.Repository
     {
         private DateTime _date;
         private decimal? _total = 0;
+        private IDictionary<BillType, decimal> _billTypeTotals = new Dictionary<BillType, decimal>();
         private IDictionary<BillType, List<Bill>> _billTypes = new Dictionary<BillType, List<Bill>>();
 
         public BillDateSummary()
@@ -41,6 +42,15 @@ namespace Service.Repository
             {
 				_billTypes.Add(billType, new List<Bill>() { bill });
 			}
+
+            if (_billTypeTotals.TryGetValue(billType, out decimal billTypeTotal))
+            {
+                _billTypeTotals[billType] = billTypeTotal + bill.Price;
+            }
+            else
+            {
+                _billTypeTotals.Add(billType, bill.Price);
+            }
 		}
 
         public decimal? GetTotal()
@@ -70,13 +80,13 @@ namespace Service.Repository
             return bills;
         }
 
-        public List<decimal?> GetBillTypeValues()
+        public List<decimal?> GetBillTypeTotalValues()
         {
             List<decimal?> billValues = new List<decimal?>();
 
-            foreach (var billType in _billTypes.Values)
+            foreach (var billType in _billTypeTotals.Values)
             {
-                decimal? total = billType.Select(x => x.Price).Sum();
+                decimal? total = billType;
                 billValues.Add(total);
 			}
 
