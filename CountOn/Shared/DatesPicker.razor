@@ -1,1 +1,59 @@
-﻿
+﻿@using System.Globalization;
+
+<div class="d-flex flex-column align-items-center p-3 bg-white box-shadow">
+	<label for="dates">Dates</label>
+	<div class="d-flex flex-row">
+		<div class="d-flex flex-column text-center p-1 m-1 box-shadow">
+			<label>Month</label>
+			<select name="month" id="month" @onchange="(e => HandleUpdateMonth(e))" value="@defaultMonth">
+				@foreach (var value in DateTimeFormatInfo.InvariantInfo.MonthNames)
+				{
+					<option value=@value>@value</option>
+				}
+			</select>
+		</div>
+		<div class="d-flex flex-row align-items-end p-1 m-1 box-shadow">
+			<div class="d-flex flex-column text-center p-1">
+				<label>From</label>
+				<input type="date" id="date-from" name="from" @onchange="(e => HandleUpdateDates(0, DateTime.Parse(e.Value.ToString())))">
+			</div>
+
+			<div class="d-flex flex-column text-center p-1">
+				<label>To</label>
+				<input type="date" id="date-to" name="to" @onchange="(e => HandleUpdateDates(1, DateTime.Parse(e.Value.ToString())))">
+			</div>
+		</div>		
+	</div>
+</div>
+
+@code {
+	[Parameter]
+	public Action<int, DateTime> UpdateDates { get; set; }
+
+	[Parameter]
+	public Action<int, string> UpdateMonth { get; set; }
+
+	private string defaultMonth { get; set; } 
+
+	protected override void OnInitialized()
+	{
+		var months = DateTimeFormatInfo.InvariantInfo.MonthNames;
+		defaultMonth = months[DateTime.Now.Month - 1];
+		int monthNumber = Array.IndexOf(DateTimeFormatInfo.InvariantInfo.MonthNames, defaultMonth);
+
+		UpdateMonth?.Invoke(monthNumber, defaultMonth);
+	}
+
+	private void HandleUpdateMonth(ChangeEventArgs e)
+	{
+		var month = e.Value.ToString();
+		int monthNumber = Array.IndexOf(DateTimeFormatInfo.InvariantInfo.MonthNames, month);
+		
+		UpdateMonth?.Invoke(monthNumber, month);
+	}
+
+	private void HandleUpdateDates(int dateLimit, DateTime value)
+	{
+		UpdateDates?.Invoke(dateLimit, value);
+	}
+}
