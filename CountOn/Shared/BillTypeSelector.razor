@@ -1,6 +1,6 @@
 ﻿<div class="d-flex flex-column align-items-center bg-white p-3 bill-type-container">
 	<label for="@Label">@Label</label>
-	<select name="@Label" id="@Label" @onchange="(e => OnValueChangeHandler(e))" value="@DefaultValue">
+	<select class="p-2" name="@Label" id="@Label" @onchange="(e => OnValueChangeHandler(e))" value="@DefaultValue">
 		@foreach (var value in @Values)
 		{
 			<option value=@value>@value</option>
