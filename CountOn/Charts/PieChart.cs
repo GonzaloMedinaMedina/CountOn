@@ -29,10 +29,11 @@ namespace CountOn.Charts
             IDictionary<BillType, List<Bill>> billTypes = billDateSummary.GetBillTypes();
             IList<BillType> billTypesList = billTypes.Keys.ToList();
             config.Data.Labels = billTypesList.ToList().ConvertAll(x => x.ToString());
-            config.Data.Datasets.Add(new PieDataset()
+
+			config.Data.Datasets.Add(new PieDataset()
             {
                 Label = "Pie chart Label",
-                Data = billDateSummary.GetBillTypeValues(),
+                Data = billDateSummary.GetTotalValuesByBillType().Values.ToList(),
                 BackgroundColor = new List<string>() { "rgb(255, 0, 0)", "rgb(0, 255, 0)", "rgb(0, 0, 255)" },
                 BorderWidth = 1
             });

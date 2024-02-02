@@ -29,10 +29,10 @@ namespace Service.Repository
         /// </summary>
         /// <returns>A List with all the bills.</returns>
         IList<Bill> GetAllBills();
-        /// <summary>
-        /// Get the total amount of each bill type.
-        /// </summary>
-        /// <returns>A list with all the totals.</returns>
-        List<decimal?> GetBillTypeTotalValues();
+		/// <summary>
+		/// Get the total amount of each bill type.
+		/// </summary>
+		/// <returns>A dictionary with all the totals by billType as key.</returns>
+		IDictionary<BillType, decimal?> GetTotalValuesByBillType();
 	}
 }
