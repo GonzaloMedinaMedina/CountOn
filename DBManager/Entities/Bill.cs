@@ -20,10 +20,10 @@ namespace DBManager.Entities
 		public BillType BillType { get; set; }
 		public DateTime BillDate { get; set; }
 
-		public Bill() : base(-1)
+		public Bill() : base()
 		{ }
 
-		public Bill(string name, int price, BillType billType, DateTime date) : base(-1)
+		public Bill(string name, int price, BillType billType, DateTime date) : base()
 		{
 			Name = name;
 			Price = price;

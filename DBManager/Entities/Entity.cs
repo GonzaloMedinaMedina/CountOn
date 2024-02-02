@@ -8,7 +8,11 @@ namespace DBManager.Entities
 		[Key]
 		private int _id;
 
-		public Entity() { }
+		public Entity() 
+		{
+			_id = -1;
+		}
+
 		public Entity(int id)
 		{
 			_id = id;
