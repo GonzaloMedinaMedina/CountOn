@@ -1,0 +1,57 @@
+﻿@using CountOn.Charts;
+@using CountOn.Models;
+@using CountOn.Controllers;
+@using PSC.Blazor.Components.Chartjs.Interfaces;
+@using Service.Repository;
+
+<div>
+	@if (BillsInfoModel.config.GetType() == typeof(PieChartConfig))
+	{
+		<div class="top-left-button p-1 m-1 box-shadow" @onclick="(e => GoBackToBarChart())">&#8592;</div>
+		<h1 class="text-center">@GetSelectedBillDate()</h1>
+	}
+	<div class="chart-container">				
+		<Chart Style="flex:1; display:flex" Config="BillsInfoModel.config" @ref="_chart"></Chart>
+	</div>
+</div>
+
+@code 
+{
+	private Chart _chart;
+
+	protected override void OnInitialized()
+	{
+		BillsInfoController.SetChartConfig();
+	}
+
+	protected override void OnAfterRender(bool firstRender)
+	{
+		base.OnAfterRender(firstRender);
+	}
+
+	private void GoBackToBarChart()
+	{
+		BillsInfoModel.selectedBill = null;
+		BillsInfoController.SetChartConfig();
+		StateHasChanged();
+	}
+
+	private string GetSelectedBillDate()
+	{
+		var date = BillsInfoModel.selectedBill.GetDate();
+
+		var weekDay = date.DayOfWeek.ToString();
+		var monthDay = date.Day.ToString("00");
+		var month = date.Month.ToString("00");
+		var year = date.Year.ToString("0000");
+
+		return $"{weekDay} {monthDay}/{month}/{year}";
+	}
+
+	public void UpdateState()
+	{
+		BillsInfoController.SetChartConfig();
+		StateHasChanged();
+	}
+
+}

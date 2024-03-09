@@ -50,6 +50,15 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="Resources\Images\white_engine.png" />
+      <None Remove="Shared\ActionButtons.razor.css" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Shared\ActionButtons.razor.css" />
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\DBManager\DBManager.csproj" />
       <ProjectReference Include="..\Service\Service.csproj" />
     </ItemGroup>

@@ -1,7 +1,7 @@
 ﻿
 using DBManager.Entities;
 
-namespace Service.Repository
+namespace Service.Services
 {
     public class BillDateSummary : IBillDateSummary
     {
@@ -30,18 +30,18 @@ namespace Service.Repository
             _date = date;
         }
 
-        public void AddBill(Bill bill, BillType billType) 
+        public void AddBill(Bill bill, BillType billType)
         {
             if (_billTypes.TryGetValue(billType, out List<Bill> bills))
             {
                 bills.Add(bill);
                 _billTypes[billType] = bills;
 
-			}
+            }
             else
             {
-				_billTypes.Add(billType, new List<Bill>() { bill });
-			}
+                _billTypes.Add(billType, new List<Bill>() { bill });
+            }
 
             if (_billTypeTotals.TryGetValue(billType, out decimal? billTypeTotal))
             {
@@ -51,11 +51,17 @@ namespace Service.Repository
             {
                 _billTypeTotals.Add(billType, bill.Price);
             }
-		}
+        }
 
         public decimal? GetTotal()
         {
-            return _total;
+			if (UserContext.Instance.BillType != BillType.ALL &&
+				_billTypeTotals.TryGetValue(UserContext.Instance.BillType, out var filteredTotal))
+			{
+				return filteredTotal;
+			}
+
+			return _total;
         }
 
         public DateTime GetDate()
@@ -63,16 +69,22 @@ namespace Service.Repository
             return _date;
         }
 
-        public IDictionary<BillType, List<Bill>> GetBillTypes() 
+        public IDictionary<BillType, List<Bill>> GetBillTypes()
         {
             return _billTypes;
         }
 
         public IList<Bill> GetAllBills()
         {
-			List<Bill> bills = new List<Bill>();
-            
-            foreach(var billType in _billTypes)
+            List<Bill> bills = new List<Bill>();
+
+            if (UserContext.Instance.BillType != BillType.ALL &&
+                _billTypes.TryGetValue(UserContext.Instance.BillType, out var filteredBills))
+            {
+                return filteredBills;
+            }
+
+            foreach (var billType in _billTypes)
             {
                 bills.AddRange(billType.Value);
             }

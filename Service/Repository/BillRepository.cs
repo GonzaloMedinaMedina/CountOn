@@ -1,6 +1,7 @@
 ﻿using DBManager.QueryResults;
 using DBManager.Provider;
 using DBManager.Entities;
+using Service.Services;
 
 namespace Service.Repository
 {

@@ -1,0 +1,38 @@
+@using CountOn.Models;
+
+<div class="text-center m-3">
+	<h1>Expenses</h1>
+	<h3>@BillsInfoModel.selectedDateName</h3>
+	<table class="w-100">
+		<thead>
+			<tr>
+				<th></th>
+				<th colspan="2">Current</th>
+				<th colspan="2">Limit</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="summary-total">
+				<td>Total</td>
+				<td colspan="2">@BillsInfoModel.billRangeDateSummary.GetTotal()</td>
+				<td colspan="2">X</td>
+			</tr>
+			@foreach (var billType in BillsInfoModel.billRangeDateSummary.TotalPerType())
+			{
+				<tr>
+					<td>@billType.Key.ToString()[0]@billType.Key.ToString().Substring(1).ToLower()</td>
+					<td colspan="2">@billType.Value</td>
+					<td colspan="2">X</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</div>
+
+@code 
+{
+	public void UpdateState()
+	{
+		StateHasChanged();
+	}
+}

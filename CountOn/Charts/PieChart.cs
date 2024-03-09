@@ -1,7 +1,7 @@
-﻿using Service.Repository;
-using DBManager.Entities;
+﻿using DBManager.Entities;
 using PSC.Blazor.Components.Chartjs.Models.Common;
 using PSC.Blazor.Components.Chartjs.Models.Pie;
+using Service.Services;
 
 namespace CountOn.Charts
 {

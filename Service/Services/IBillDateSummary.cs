@@ -1,7 +1,7 @@
 ﻿
 using DBManager.Entities;
 
-namespace Service.Repository
+namespace Service.Services
 {
     /// <summary>
     /// Represent all the bills in an specific date.
@@ -29,10 +29,10 @@ namespace Service.Repository
         /// </summary>
         /// <returns>A List with all the bills.</returns>
         IList<Bill> GetAllBills();
-		/// <summary>
-		/// Get the total amount of each bill type.
-		/// </summary>
-		/// <returns>A dictionary with all the totals by billType as key.</returns>
-		IDictionary<BillType, decimal?> GetTotalValuesByBillType();
-	}
+        /// <summary>
+        /// Get the total amount of each bill type.
+        /// </summary>
+        /// <returns>A dictionary with all the totals by billType as key.</returns>
+        IDictionary<BillType, decimal?> GetTotalValuesByBillType();
+    }
 }

@@ -1,4 +1,6 @@
 ﻿
+using Service.Services;
+
 namespace Service.Repository
 {
     public interface IBillRepository

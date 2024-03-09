@@ -27,27 +27,6 @@
     background-color: white;
 }
 
-.top-left-button {
-    top: 10px;
-    position: sticky;
-    height: 50px;
-    width: 50px;
-    background-color: white;
-    border-radius: 50%;
-    display: inline-block;
-    text-align: center;
-    font-size: 2.25rem; /* 36px */
-    line-height: 2.5rem; /* 40px */
-    cursor: pointer;
-    background-color: dodgerblue;
-    color: white;
-}
-
-.top-left-button-container {
-    margin: 1%;
-    padding: 1%;
-}
-
 .box-shadow {
     box-shadow: 1px 1px 5px 2px rgb(0 0 0 / 0.25);
 }
@@ -126,4 +105,16 @@ div{ border-radius: 10px}
 .disabled {
     pointer-events: none;
     opacity: 0.5;
+}
+
+.summary-header {
+    font-size: x-large;
+}
+
+.summary-total {
+    font-size: large;
+}
+
+.engine {
+    background-image: url("~/Resources/Images/white_engine.png")
 }

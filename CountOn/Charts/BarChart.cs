@@ -1,6 +1,6 @@
 ﻿using PSC.Blazor.Components.Chartjs.Models.Bar;
 using PSC.Blazor.Components.Chartjs.Models.Common;
-using Service.Repository;
+using Service.Services;
 
 namespace CountOn.Charts
 {
@@ -23,7 +23,13 @@ namespace CountOn.Charts
             foreach (var billDateSummary in billsByDate)
             {
                 DateTime date = billDateSummary.GetDate();
-                result.Add(date.DayOfWeek.ToString().Substring(0, 3) + "\n" + date.Day.ToString() + "/" + date.Month.ToString());
+
+                string dayOfWeek = date.DayOfWeek.ToString().Substring(0, 3);
+                string dayOfMonth = date.Day.ToString();
+                string month = date.Month.ToString();
+                string yLabel = $"{dayOfWeek}/{dayOfMonth}/{month}";
+
+				result.Add(yLabel);
             }
 
             return result;

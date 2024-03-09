@@ -1,0 +1,73 @@
+﻿@using CountOn.Controllers
+@using Service.Repository
+@using CountOn.Models
+
+<div class="d-flex flex-column flex-wrap align-items-center">
+	<div class="d-flex flex-grow-1 p-1 align-content-center">
+		<BillTypeSelector Values="Enum.GetValues(typeof(DBManager.Entities.BillType)).Cast<DBManager.Entities.BillType>().Select(e => e.ToString()).ToList()"
+			Label="Type"
+			OnValueChange="SetBillTypeFilter"
+			DefaultValue="@DBManager.Entities.BillType.ALL.ToString()">
+		</BillTypeSelector>
+	</div>
+
+	<div class="d-flex flex-grow-1 flex-column align-items-center p-1 @(BillsInfoModel.config.GetType() == typeof(PieChartConfig) ? "disabled" : "")">
+		<DatesPicker UpdateDates="UpdateDates" UpdateMonth="UpdateMonth" />
+	</div>
+</div>
+
+@code {
+
+	private DateTime fromDate;
+	private DateTime toDate;
+
+	private void SetBillTypeFilter(string billType)
+	{
+		var billTypeFilter = (DBManager.Entities.BillType)Enum.Parse(typeof(DBManager.Entities.BillType), billType);
+		BillsInfoController.SetBillTypeFilter(billTypeFilter);
+	}
+
+	private void UpdateDates(int dateLimit, DateTime valueToAssign)
+	{
+		if (dateLimit == 0)
+		{
+			fromDate = valueToAssign;
+			if (toDate == DateTime.MinValue)
+				return;
+		}
+		else
+		{
+			toDate = valueToAssign;
+			if (fromDate == DateTime.MinValue)
+				return;
+		}
+
+		BillsInfoModel.selectedDateName = $"{fromDate.ToString("dd/MM/yyyy")} - {toDate.ToString("dd/MM/yyyy")}";
+		SetBillsByDateRange();
+		BillsInfoController.SetChartConfig();
+		StateHasChanged();
+	}
+
+	private void UpdateMonth(int month, string monthName)
+	{
+		BillsInfoModel.selectedDateName = $" {monthName}";
+		int year = DateTime.Now.Year;
+		month++;
+
+		// Get the first day of the month
+		fromDate = new DateTime(year, month, 1);
+		// Get the last day of the month
+		toDate = new DateTime(year, month, DateTime.DaysInMonth(year, month));
+
+		SetBillsByDateRange();
+		BillsInfoController.SetChartConfig();
+		StateHasChanged();
+	}
+
+
+	private void SetBillsByDateRange()
+	{
+		@inject IBillRepository rep;
+		BillsInfoController.SetBillsByDateRange(rep, fromDate, toDate);
+	}
+}

@@ -1,0 +1,70 @@
+@using CountOn.Controllers
+@using CountOn.Models;
+@using System.Text.Json;
+
+@{
+	void RenderBills(IList<DBManager.Entities.Bill> bills, string date)
+	{
+		@if (bills.Any())
+		{
+			//IList<DBManager.Entities.Bill> filteredBills = bills;
+
+			/*@if (BillsInfoModel.billTypeFilter != DBManager.Entities.BillType.ALL)
+			{
+				filteredBills = bills.Where(x => x.BillType == BillsInfoModel.billTypeFilter).ToList();
+			}*/
+
+			@if (bills.Any())
+			{
+				<div class="bill-container">
+					<div class="date-element">@date</div>
+					@foreach (var bill in bills)
+					{
+						<div class="bill-element" @onclick="(e => NavigateToBillPage(JsonSerializer.Serialize<DBManager.Entities.Bill>(bill)))">
+							<div class="bill-left-element">
+								<div class="align-text-start bill-title">@bill.Name</div>
+								<div class="align-text-start bill-type">@bill.BillType</div>
+							</div>
+							<div class="bill-right-element">
+								<div class="text-center">@bill.BillDate.Hour.ToString("00"):@bill.BillDate.Minute.ToString("00")</div>
+								<div class="text-center">@bill.Price €</div>
+							</div>
+						</div>
+					}
+				</div>
+			}
+		}
+	}
+
+	void RenderBillsInDate()
+	{
+		if (BillsInfoModel.selectedBill != null)
+		{
+			RenderBills(BillsInfoModel.selectedBill.GetAllBills(), BillsInfoModel.selectedBill.GetDate().ToString("dd/MM/yyyy"));
+		}
+		else
+		{
+			@foreach (var billsInDate in BillsInfoController.GetBillsByDate().Reverse())
+			{
+				var bills = billsInDate.GetAllBills();
+				RenderBills(bills, @billsInDate.GetDate().ToString("dd/MM/yyyy"));
+			}
+		}
+	}
+
+	RenderBillsInDate();
+}
+
+@code 
+{
+	private void NavigateToBillPage(string JsonBill = "")
+	{
+		@inject NavigationManager navManager;
+		navManager.NavigateTo("bill/" + JsonBill);
+	}
+
+	public void UpdateState()
+	{
+		StateHasChanged();
+	}
+}
