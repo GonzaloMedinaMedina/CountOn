@@ -22,7 +22,7 @@ namespace Service.Repository
         
         public IBillDateSummary GetBillsByDate(DateTime date)
         {
-            BillDateSummary result = new BillDateSummary();
+            BillDateSummary result = new BillDateSummary(null);
             if (date.Date <= DateTime.Now)
             {
                 ReadQueryResult<Bill> allBillsQuery = _repository.GetAllEntities();

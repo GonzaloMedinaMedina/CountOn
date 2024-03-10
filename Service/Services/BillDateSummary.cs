@@ -1,5 +1,6 @@
 ﻿
 using DBManager.Entities;
+using Service.Resolvers;
 
 namespace Service.Services
 {
@@ -9,9 +10,24 @@ namespace Service.Services
         private decimal? _total = 0;
         private IDictionary<BillType, decimal?> _billTypeTotals = new Dictionary<BillType, decimal?>();
         private IDictionary<BillType, List<Bill>> _billTypes = new Dictionary<BillType, List<Bill>>();
+        private readonly IBillResolver billResolver;
 
-        public BillDateSummary()
-        { }
+        public decimal? Total
+        {
+            get
+            {
+                return _total;
+            }
+            set 
+            {
+                _total = value;
+            }
+        }
+
+        public BillDateSummary(IBillResolver billResolver)
+        {
+            this.billResolver = billResolver;
+        }
 
         public BillDateSummary(DateTime date, decimal? total)
         {
@@ -23,7 +39,6 @@ namespace Service.Services
         {
             _total = total;
         }
-
 
         public void SetDate(DateTime date)
         {
@@ -55,13 +70,7 @@ namespace Service.Services
 
         public decimal? GetTotal()
         {
-			if (UserContext.Instance.BillType != BillType.ALL &&
-				_billTypeTotals.TryGetValue(UserContext.Instance.BillType, out var filteredTotal))
-			{
-				return filteredTotal;
-			}
-
-			return _total;
+            return this.billResolver.GetTotal(this);
         }
 
         public DateTime GetDate()
@@ -76,25 +85,17 @@ namespace Service.Services
 
         public IList<Bill> GetAllBills()
         {
-            List<Bill> bills = new List<Bill>();
-
-            if (UserContext.Instance.BillType != BillType.ALL &&
-                _billTypes.TryGetValue(UserContext.Instance.BillType, out var filteredBills))
-            {
-                return filteredBills;
-            }
-
-            foreach (var billType in _billTypes)
-            {
-                bills.AddRange(billType.Value);
-            }
-
-            return bills;
+            return this.billResolver.GetAllBills(this);
         }
 
         public IDictionary<BillType, decimal?> GetTotalValuesByBillType()
         {
             return _billTypeTotals;
         }
-    }
+
+        public bool GetTypeTotal(BillType billType, out decimal? typeTotal)
+        {
+			return _billTypeTotals.TryGetValue(UserContext.Instance.BillType, out typeTotal);
+        }
+	}
 }

@@ -34,5 +34,12 @@ namespace Service.Services
         /// </summary>
         /// <returns>A dictionary with all the totals by billType as key.</returns>
         IDictionary<BillType, decimal?> GetTotalValuesByBillType();
+        /// <summary>
+        /// Gets the total amount of an specific bill type
+        /// </summary>
+        /// <param name="billType">The bill type.</param>
+        /// <param name="typeTotal">The value of the total amount.</param>
+        /// <returns>True if the total has been retrieved, false otherwise.</returns>
+        bool GetTypeTotal(BillType billType, out decimal? typeTotal);
     }
 }
